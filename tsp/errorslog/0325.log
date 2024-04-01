@@ -1,0 +1,30 @@
+
+### unexpected kind header for property
+Error: unexpected kind header for property msErrorCode in model ResponseError
+    cognitiveservices\AnomalyDetector
+Error: unexpected kind header for property clientRequestId in model PagedMessageTemplateItem
+    communication\Communication.Messages
+Error: unexpected kind header for property retryAfter in model ServiceUnavailableError
+    confidentialledger\Microsoft.CodeTransparency
+Error: unexpected kind header for property clientRequestId in model PagedAccessToken
+    playwrighttesting\PlaywrightTesting
+Error: unexpected kind header for property countOfRecords in model PagedAccountResource
+    voiceservices\VoiceServices.Provisioning
+
+### unhandled property kind
+Error: unhandled property kind union
+    cognitiveservices\OpenAI.Inference
+Error: unhandled property kind azureLocation
+    devcenter\DevCenter
+Error: unhandled property kind safeint
+    purview\Azure.Analytics.Purview.DataMap
+
+
+Error: unexpected header parameter type eTag
+    applicationinsights\ApplicationInsights.LiveMetrics
+
+Error: unnamed model
+    confidentialledger\Microsoft.ManagedCcf
+
+TypeError: name.replace is not a function
+    loadtestservice\LoadTestService

@@ -88,7 +88,7 @@ func MergeJson(dir string, dst string) error {
 		return err
 	}
 	// fmt.Println(string(marshalSpec))
-	if err = os.WriteFile(dst, marshalSpec, 0666); err != nil {
+	if err = os.WriteFile(dst, marshalSpec, 0o666); err != nil {
 		// log.Fatal(err)
 		return err
 	}
@@ -115,7 +115,7 @@ func FormatJson(specPath string, dst string) error {
 		return err
 	}
 
-	if err = os.WriteFile(dst, marshalSpec, 0666); err != nil {
+	if err = os.WriteFile(dst, marshalSpec, 0o666); err != nil {
 		return err
 	}
 	return nil
@@ -132,6 +132,7 @@ func ComparePath(first, second string, dst string) error {
 		return err
 	}
 
+	fmt.Println("compare paths:")
 	// diff paths
 	path1 := make(map[string]bool, len(spec1.Analyzer.AllPaths()))
 	for k := range spec1.Spec().Paths.Paths {
@@ -172,7 +173,7 @@ func ComparePath(first, second string, dst string) error {
 	pathFile.WriteString("## Compare Path\n\n")
 
 	sort.Strings(firstPaths)
-	fmt.Println("first file paths not container in second:", len(firstPaths))
+	fmt.Println("\tfirst file paths not container in second:", len(firstPaths))
 	pathFile.WriteString(fmt.Sprintf("\n### %s not included in the other:\n\n", first))
 	for _, v := range firstPaths {
 		fmt.Println("\t", v, lookupOperationId(spec1.Spec().Paths.Paths[v]))
@@ -181,7 +182,7 @@ func ComparePath(first, second string, dst string) error {
 	}
 
 	sort.Strings(secondPaths)
-	fmt.Println("second file paths not container in first:", len(secondPaths))
+	fmt.Println("\tsecond file paths not container in first:", len(secondPaths))
 	pathFile.WriteString(fmt.Sprintf("\n### %s not included in the other:\n\n", second))
 	for _, v := range secondPaths {
 		fmt.Println("\t", v, lookupOperationId(spec2.Spec().Paths.Paths[v]))

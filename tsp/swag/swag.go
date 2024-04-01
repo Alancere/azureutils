@@ -27,7 +27,7 @@ func main() {
 		_, err = os.Stat(subDir)
 		if err != nil {
 			if errors.Is(err, os.ErrNotExist) {
-				if err = os.Mkdir(subDir, 0666); err != nil {
+				if err = os.Mkdir(subDir, 0o666); err != nil {
 					log.Fatal(err)
 				}
 			}

@@ -60,7 +60,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 		}
 	}
 
-	if err = os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644); err != nil {
+	if err = os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0o644); err != nil {
 		return err
 	}
 
@@ -70,7 +70,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	}
 	contents := ModuleVersionRegex.ReplaceAllString(string(b), "moduleVersion = \"v"+newVersion+"\"")
 
-	return os.WriteFile(path, []byte(contents), 0644)
+	return os.WriteFile(path, []byte(contents), 0o644)
 }
 
 // add new changelog md to changelog file
@@ -94,7 +94,7 @@ func AddChangelogToFile(additionalChangelog string, version *semver.Version, pac
 		break
 	}
 
-	err = os.WriteFile(path, []byte(newChangelog), 0644)
+	err = os.WriteFile(path, []byte(newChangelog), 0o644)
 	if err != nil {
 		return "", err
 	}

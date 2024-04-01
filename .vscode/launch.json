@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "goazure fetch",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/goazure",
+            "args": [
+                "fetch",
+                // "-f",
+                "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v2@v2.0.0"
+            ]
+        },
+        {
+            "name": "goazure tsp swag",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/goazure",
+            "args": [
+                "tsp",
+                "swag",
+                
+                // "D:/tmp/sphere",
+                // "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/azuresphere.json",
+                // "./sphere"
+
+                "--originDir",
+                "D:/tmp/sphere",
+                "--compiledFile",
+                "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/azuresphere.json",
+                "./sphere"
+            ]
+        },
+// ---------------------------test---------------------------
+        {
+            "name": "autorest test",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/autorest",
+            "args": [
+                "-test.run",
+                "TestReadAutorsetMD"
+            ]
+        }
+    ]
+}

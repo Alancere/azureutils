@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
@@ -76,10 +77,11 @@ func Info(module string) error {
 // GOPROXY=https://proxy.golang.org GO111MODULE=on go get example.com/my/module@v1.0.0
 func GoGet(module string) error {
 	os.Setenv("GOPROXY", "https://proxy.golang.org")
-	os.Setenv("GO111MODULE", "on")
-
+	os.Setenv("GO111MODULE", "auto")
 	cmd := exec.Command("go", "get", module)
 	// cmd.Dir = ""
+	fmt.Printf("GO111MODULE=%s go get %s\n", os.Getenv("GO111MODULE"), module)
+
 	output, err := cmd.CombinedOutput()
 	log.Printf("Result of `%s` execution: \n%s", cmd.String(), string(output))
 	if err != nil {
@@ -104,3 +106,16 @@ func NewPackages(module string) error {
 
 	return nil
 }
+
+// module-name@version
+func Validate(module string) (bool, error) {
+	module = strings.ToLower(module)
+
+	b := regexp.MustCompile(`^[\w\d\.\-\/]+@v\d+\.\d+\.\d+[\-\w\d\.]?`).MatchString(module)
+	if !b {
+		return false, fmt.Errorf("invalid module name(module-name@version): %s", module)
+	}
+	return b, nil
+}
+
+// github.com/alancere/azureutils@v0.1.0
