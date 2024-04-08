@@ -1,4 +1,3 @@
-
 ### unexpected kind header for property
 Error: unexpected kind header for property msErrorCode in model ResponseError
     cognitiveservices\AnomalyDetector

@@ -100,9 +100,9 @@ func NewPackages(module string) error {
 		return err
 	}
 
-	if err := GoGet(module); err != nil {
-		return err
-	}
+	// if err := GoGet(module); err != nil {
+	// 	return err
+	// }
 
 	return nil
 }

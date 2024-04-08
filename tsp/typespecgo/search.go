@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 )
 
+// 有tspconfig.yaml并且有readme.go.md的目录
 func SearchTSP(dir string) ([]string, error) {
 	count := 0
 	tspConfigs := make([]string, 0, 128)

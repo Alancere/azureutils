@@ -34,7 +34,19 @@
                 "D:/tmp/sphere",
                 "--compiledFile",
                 "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/azuresphere.json",
-                "./sphere"
+                "./sphere"  // outputDir
+            ]
+        },
+        {
+            "name": "goazure generate release",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/goazure",
+            "args": [
+                "generate",
+                "release",
+                "--spec", "myspec"
             ]
         },
 // ---------------------------test---------------------------
