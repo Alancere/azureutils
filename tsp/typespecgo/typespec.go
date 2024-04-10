@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"slices"
 
-	"gopkg.in/yaml.v3"
+	"github.com/goccy/go-yaml"
 )
 
 /*
@@ -127,43 +127,10 @@ func (tc *TSPConfig) EditOptions(emit string, option any, append bool) {
 }
 
 func (tc *TSPConfig) Write() error {
-	data, err := yaml.Marshal(tc.TypeSpecProjectSchema)
+	data, err := yaml.MarshalWithOptions(tc.TypeSpecProjectSchema, yaml.IndentSequence(true))
 	if err != nil {
 		return err
 	}
 
 	return os.WriteFile(tc.Path, data, 0o666)
-
-	// f,err := os.OpenFile(tc.Path, os.O_CREATE | os.O_RDWR, 0777)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// w := bufio.NewWriter(f)
-
-	// x := yaml.NewEncoder(w)
-	// x.SetIndent(2)
-	// err = x.Encode(tc.TypeSpecProjectSchema)
-	// if err != nil {
-	// 	return err
-	// }
-
-	// return w.Flush()
 }
-
-// func (tsps TypeSpecProjectSchema) MarshalYAML() (interface{}, error) {
-// 	return &struct{
-// 		Extends *yaml.Node `yaml:"extends,omitempty"`
-// 		Parameters map[string]any `yaml:"parameters,omitempty"`
-// 		EnvironmentVariables map[string]any `yaml:"environment-variables,omitempty"`
-// 		WarnAsError bool `yaml:"warn-as-error,omitempty"`
-// 		OutPutDir string `yaml:"output-dir,omitempty"` // 不应该是bool
-// 		Trace []string `yaml:"trace,omitempty"`
-// 		Imports string `yaml:"imports,omitempty"`
-// 		Emit []string `yaml:"emit,omitempty"`
-// 		Options map[string]any `yaml:"options,omitempty"`
-// 		Linter LinterConfig `yaml:"linter,omitempty"`
-// 	}{
-// 		Extends: &yaml.Node{Kind: yaml.ScalarNode, Value: tsps.Extends, Style: },
-// 	}, nil
-// }
