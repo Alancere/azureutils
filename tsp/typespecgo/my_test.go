@@ -131,16 +131,16 @@ func TestGenerateSDK(t *testing.T) {
 		// gosdk := fmt.Sprintf("%s/go/%s", filepath.Dir(configPath), moduleName)
 		if tspErr == nil {
 			gosdk := filepath.Join(filepath.Dir(configPath), "go", moduleName.(string))
+			if err = GoFmt(gosdk, "-w", "."); err != nil {
+				log.Println("####gofmt ", err)
+			}
+
 			if err = Go(gosdk, "mod", "tidy"); err != nil {
 				log.Println("####go mod", err)
 			}
 
 			if err = Go(gosdk, "vet", "./..."); err != nil {
 				log.Println("####go vet", err)
-			}
-
-			if err = GoFmt(gosdk, "-w", "."); err != nil {
-				log.Println("####gofmt ", err)
 			}
 		}
 		// break
@@ -271,16 +271,16 @@ func TestGeneratePrivateSDK(t *testing.T) {
 		// gosdk := fmt.Sprintf("%s/go/%s", filepath.Dir(configPath), moduleName)
 		if tspErr == nil {
 			gosdk := filepath.Join(filepath.Dir(configPath), "go", moduleName.(string))
+			if err = GoFmt(gosdk, "-w", "."); err != nil {
+				log.Println("####gofmt ", err)
+			}
+			
 			if err = Go(gosdk, "mod", "tidy"); err != nil {
 				log.Println("####go mod", err)
 			}
 
 			if err = Go(gosdk, "vet", "./..."); err != nil {
 				log.Println("####go vet", err)
-			}
-
-			if err = GoFmt(gosdk, "-w", "."); err != nil {
-				log.Println("####gofmt ", err)
 			}
 		}
 		// break
