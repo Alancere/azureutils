@@ -2,7 +2,7 @@ module github.com/Alancere/azureutils
 
 go 1.22.0
 
-require golang.org/x/mod v0.12.0
+require golang.org/x/mod v0.17.0
 
 require (
 	github.com/Jeffail/gabs v1.4.0

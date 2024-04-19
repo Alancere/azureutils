@@ -22,10 +22,10 @@ var swagCmd = &cobra.Command{
 		l := len(args)
 		if l == 1 {
 			outputDir = args[0]
-		}else if l == 2 {
+		} else if l == 2 {
 			originDir = args[0]
 			compiledFile = args[1]
-		}else if l == 3 {
+		} else if l == 3 {
 			originDir = args[0]
 			compiledFile = args[1]
 			outputDir = args[2]
@@ -33,10 +33,10 @@ var swagCmd = &cobra.Command{
 
 		if outputDir == "" {
 			outputDir = "."
-		}else {
+		} else {
 			// create output dir
 			if err := os.Mkdir(outputDir, 0o666); err != nil {
-				return  err
+				return err
 			}
 		}
 
@@ -62,9 +62,9 @@ var swagCmd = &cobra.Command{
 }
 
 var (
-	originDir string
+	originDir    string
 	compiledFile string
-	outputDir string
+	outputDir    string
 )
 
 func init() {

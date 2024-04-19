@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/spf13/viper"
 	"github.com/goccy/go-yaml"
+	"github.com/spf13/viper"
 )
 
 /*
@@ -81,15 +81,15 @@ func TestGenerateSDK(t *testing.T) {
 
 		// 过滤 data-plane
 		if v, ok := tspConfig.TypeSpecProjectSchema.Options["@azure-tools/typespec-autorest"]; ok {
-			if pro,ok := v.(map[string]any)["azure-resource-provider-folder"]; ok {
+			if pro, ok := v.(map[string]any)["azure-resource-provider-folder"]; ok {
 				if strings.Contains(pro.(string), "data-plane") {
 					dataPlaneTspCount = append(dataPlaneTspCount, configPath)
 					continue
-				}else if strings.Contains(pro.(string), "resource-manager") {
+				} else if strings.Contains(pro.(string), "resource-manager") {
 					mgmtTspCount = append(mgmtTspCount, configPath)
 				}
 			}
-		}else {
+		} else {
 			fmt.Println("not found @azure-tools/typespec-autorest option:", configPath)
 		}
 
@@ -97,7 +97,7 @@ func TestGenerateSDK(t *testing.T) {
 			"module":             module,
 			"module-version":     moduleVersion,
 			"emitter-output-dir": fmt.Sprintf("{project-root}/go/%s", moduleName),
-			"generate-fakes": true,
+			"generate-fakes":     true,
 		}
 
 		tspConfig.OnlyEmit(typespecgoEmit)
@@ -157,7 +157,7 @@ func TestGenerateSDK(t *testing.T) {
 	// if err = os.WriteFile(filepath.Join(dir, "tspCompiler.log"), []byte(errMsg), 0777); err != nil {
 	//   t.Fatal(err)
 	// }
-	
+
 	fmt.Println("tsp resource management count:", len(mgmtTspCount))
 	fmt.Println("tsp data-plane count:", len(dataPlaneTspCount))
 }
@@ -191,15 +191,15 @@ func TestGeneratePrivateSDK(t *testing.T) {
 			continue
 		}
 
-		// 移除tsp中的import "@azure-tools/typespec-providerhub"
+		// 移除tsp中的import "@azure-tools/typespec-providerhub" deprecated
 		// if !strings.Contains(configPath, "Community.Management") {
 		// 	continue
 		// }
-		err = walk(filepath.Dir(configPath))
+		err = removeImport(filepath.Dir(configPath))
 		if err != nil {
 			t.Fatal(err)
 		}
-		// return 
+		// return
 
 		// read readme.go.md
 		readmeGOMD := readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.go.md"))
@@ -207,6 +207,9 @@ func TestGeneratePrivateSDK(t *testing.T) {
 		moduleName := readmeGOMD["module-name"]
 		module = strings.Replace(module.(string), "$(module-name)", moduleName.(string), -1)
 		moduleVersion := "0.1.0" // default value, need from autorest.md get
+		// 随机设置module version
+		// versions := []string{"0.1.0", "1.0.0", "2.0.0", "30.0.0", "0.5.0-beta.1", "2.2.0-beta.2"}
+		// moduleVersion = versions[rand.Intn(6)]
 
 		// tsp compile 之前把go目录和error.log删除
 		gosdk := filepath.Join(filepath.Dir(configPath), "go", moduleName.(string))
@@ -221,15 +224,15 @@ func TestGeneratePrivateSDK(t *testing.T) {
 
 		// 过滤 data-plane
 		if v, ok := tspConfig.TypeSpecProjectSchema.Options["@azure-tools/typespec-autorest"]; ok {
-			if pro,ok := v.(map[string]any)["azure-resource-provider-folder"]; ok {
+			if pro, ok := v.(map[string]any)["azure-resource-provider-folder"]; ok {
 				if strings.Contains(pro.(string), "data-plane") {
 					dataPlaneTspCount = append(dataPlaneTspCount, configPath)
 					continue
-				}else if strings.Contains(pro.(string), "resource-manager") {
+				} else if strings.Contains(pro.(string), "resource-manager") {
 					mgmtTspCount = append(mgmtTspCount, configPath)
 				}
 			}
-		}else {
+		} else {
 			fmt.Println("not found @azure-tools/typespec-autorest option:", configPath)
 		}
 
@@ -237,7 +240,7 @@ func TestGeneratePrivateSDK(t *testing.T) {
 			"module":             module,
 			"module-version":     moduleVersion,
 			"emitter-output-dir": fmt.Sprintf("{project-root}/go/%s", moduleName),
-			"generate-fakes": true,
+			"generate-fakes":     true,
 		}
 
 		tspConfig.OnlyEmit(typespecgoEmit)
@@ -274,7 +277,7 @@ func TestGeneratePrivateSDK(t *testing.T) {
 			if err = GoFmt(gosdk, "-w", "."); err != nil {
 				log.Println("####gofmt ", err)
 			}
-			
+
 			if err = Go(gosdk, "mod", "tidy"); err != nil {
 				log.Println("####go mod", err)
 			}
@@ -297,7 +300,7 @@ func TestGeneratePrivateSDK(t *testing.T) {
 	// if err = os.WriteFile(filepath.Join(dir, "tspCompiler.log"), []byte(errMsg), 0777); err != nil {
 	//   t.Fatal(err)
 	// }
-	
+
 	fmt.Println("tsp resource management count:", len(mgmtTspCount))
 	fmt.Println("tsp data-plane count:", len(dataPlaneTspCount))
 }
@@ -326,7 +329,7 @@ func readmegomd(path string) map[string]any {
 	return result
 }
 
-func walk(tspPath string) error {
+func removeImport(tspPath string) error {
 	return filepath.Walk(tspPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -341,7 +344,7 @@ func walk(tspPath string) error {
 		}
 		// fmt.Println(path)
 
-		data,err := os.ReadFile(path)
+		data, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}

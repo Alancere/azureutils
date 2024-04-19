@@ -1,4 +1,4 @@
-package autoret_test
+package autorest_test
 
 import (
 	"testing"
@@ -8,7 +8,7 @@ import (
 
 func TestReadAutorsetMD(t *testing.T) {
 	mdPath := "autorest.md"
-	_, err := autoret.ReadAutorestMD(mdPath)
+	_, err := autoret.ReadAutoRestMarkdown(mdPath)
 	if err != nil {
 		t.Errorf("Error reading autorest.md: %v", err)
 	}

@@ -17,7 +17,7 @@ import (
 var livetestCmd = &cobra.Command{
 	Use:   "livetest",
 	Short: "",
-	Long: ``,
+	Long:  ``,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
 			return fmt.Errorf("please input need generate livetest folder or file absolute path")
@@ -27,8 +27,8 @@ var livetestCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		
-		tag,err  := cmd.Flags().GetString("tag")
+
+		tag, err := cmd.Flags().GetString("tag")
 		if err != nil {
 			return err
 		}
@@ -54,7 +54,7 @@ var livetestCmd = &cobra.Command{
 		// compile
 		dst := args[0]
 		if f.IsDir() {
-			s := fmt.Sprintf(dockerScript, before,"/swagger/Compile/config.json")
+			s := fmt.Sprintf(dockerScript, before, "/swagger/Compile/config.json")
 			if tag != "" {
 				s = fmt.Sprintf("%s --tag %s", s, tag)
 			}
@@ -62,8 +62,8 @@ var livetestCmd = &cobra.Command{
 			if err != nil {
 				return err
 			}
-		}else {
-			s := fmt.Sprintf(dockerScript, before, "--api_spec " + args[0])
+		} else {
+			s := fmt.Sprintf(dockerScript, before, "--api_spec "+args[0])
 			if tag != "" {
 				s = fmt.Sprintf("%s --tag %s", s, tag)
 			}
@@ -99,11 +99,10 @@ func init() {
 	// is called directly, e.g.:
 	// livetestCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	livetestCmd.Flags().StringP("tag", "","","speficy readme.md tag")
+	livetestCmd.Flags().StringP("tag", "", "", "speficy readme.md tag")
 
 	livetestCmd.Flags().StringP("execPath", "", "", "指定执行目录")
 }
-
 
 func DockerCmd(dir string, args ...string) error {
 	goExec := exec.Command("docker", args...)

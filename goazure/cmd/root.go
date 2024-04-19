@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Alancere/azureutils/goazure/cmd/generate"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/Alancere/azureutils/goazure/cmd/generate"
 )
 
 var cfgFile string

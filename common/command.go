@@ -58,3 +58,13 @@ func GoFumpt(dir string, args ...string) error {
 
 	return nil
 }
+
+func AutorestCmd(workspace string, args ...string) (string, error) {
+	cmd := exec.Command("autorest", args...)
+	cmd.Dir = workspace
+
+	combinedOutput, err := cmd.CombinedOutput()
+	output := fmt.Sprintf("### %s\nautorest %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
+
+	return output, err
+}

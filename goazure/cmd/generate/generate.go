@@ -11,15 +11,13 @@ import (
 var GenerateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "autorest generate sdk code",
-	Long: `github.com/Azure/azure-sdk-for-go/tools/generator 包装`,
+	Long:  `github.com/Azure/azure-sdk-for-go/tools/generator 包装`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		return nil
 	},
 }
 
 func init() {
-
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
