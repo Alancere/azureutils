@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
@@ -67,7 +68,9 @@ func TestGenerateSDK(t *testing.T) {
 		moduleName := readmeGOMD["module-name"]
 		module = strings.Replace(module.(string), "$(module-name)", moduleName.(string), -1)
 		moduleVersion := "0.1.0" // default value, need from autorest.md get
-
+		versions := []string{"0.1.0", "1.0.0", "2.0.0", "30.0.0", "0.5.0-beta.1", "2.2.0-beta.2"}
+		moduleVersion = versions[rand.Intn(6)]
+		
 		// tsp compile 之前把go目录和error.log删除
 		gosdk := filepath.Join(filepath.Dir(configPath), "go", moduleName.(string))
 		os.RemoveAll(gosdk)
@@ -208,8 +211,8 @@ func TestGeneratePrivateSDK(t *testing.T) {
 		module = strings.Replace(module.(string), "$(module-name)", moduleName.(string), -1)
 		moduleVersion := "0.1.0" // default value, need from autorest.md get
 		// 随机设置module version
-		// versions := []string{"0.1.0", "1.0.0", "2.0.0", "30.0.0", "0.5.0-beta.1", "2.2.0-beta.2"}
-		// moduleVersion = versions[rand.Intn(6)]
+		versions := []string{"0.1.0", "1.0.0", "2.0.0", "30.0.0", "0.5.0-beta.1", "2.2.0-beta.2"}
+		moduleVersion = versions[rand.Intn(6)]
 
 		// tsp compile 之前把go目录和error.log删除
 		gosdk := filepath.Join(filepath.Dir(configPath), "go", moduleName.(string))

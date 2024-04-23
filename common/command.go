@@ -1,4 +1,4 @@
-package typespecgo
+package common
 
 import (
 	"fmt"
@@ -20,17 +20,15 @@ func TSP(dir string, args ...string) (string, error) {
 	return output, nil
 }
 
-func Go(dir string, args ...string) error {
+func Go(dir string, args ...string) (string,error) {
 	cmd := exec.Command("go", args...)
 	cmd.Dir = dir
 
-	output, err := cmd.CombinedOutput()
-	fmt.Printf("###Command: %s\ngo %s\n%s", cmd.Dir, strings.Join(args, " "), string(output))
-	if err != nil {
-		return err
-	}
-
-	return nil
+	combinedOutput, err := cmd.CombinedOutput()
+	output := fmt.Sprintf("###Command: %s\ngo %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
+	fmt.Println(output)
+	
+	return output, err
 }
 
 func GoFmt(dir string, args ...string) error {
@@ -65,6 +63,7 @@ func AutorestCmd(workspace string, args ...string) (string, error) {
 
 	combinedOutput, err := cmd.CombinedOutput()
 	output := fmt.Sprintf("### %s\nautorest %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
+	fmt.Println(output)
 
 	return output, err
 }
