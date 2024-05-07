@@ -4,6 +4,8 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"errors"
+
 	"github.com/Alancere/azureutils/mergego"
 	"github.com/spf13/cobra"
 )
@@ -12,8 +14,12 @@ import (
 var mergoCmd = &cobra.Command{
 	Use:   "mergo",
 	Short: "mergo dir [outfile]",
-	Long: `合并go package`,
+	Long: `合并go package
+	goazure mergo dir [outfile]`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 {
+			return errors.New("please input dir")
+		}
 		dir := args[0]
 		outfile := ""
 		if len(args) >= 2 {
