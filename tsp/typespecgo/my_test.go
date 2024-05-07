@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Alancere/azureutils/mergego"
 	"github.com/goccy/go-yaml"
 	"github.com/spf13/viper"
 )
@@ -101,6 +102,7 @@ func TestGenerateSDK(t *testing.T) {
 			"module-version":     moduleVersion,
 			"emitter-output-dir": fmt.Sprintf("{project-root}/go/%s", moduleName),
 			"generate-fakes":     true,
+			"head-as-boolean":    true, // head method
 		}
 
 		tspConfig.OnlyEmit(typespecgoEmit)
@@ -144,6 +146,11 @@ func TestGenerateSDK(t *testing.T) {
 
 			if err = Go(gosdk, "vet", "./..."); err != nil {
 				log.Println("####go vet", err)
+			}else {
+				// merge go files
+				if err = mergego.Merge(gosdk, filepath.Join(gosdk, "merged.go")); err != nil {
+					log.Fatal(err)
+				}
 			}
 		}
 		// break
@@ -244,6 +251,7 @@ func TestGeneratePrivateSDK(t *testing.T) {
 			"module-version":     moduleVersion,
 			"emitter-output-dir": fmt.Sprintf("{project-root}/go/%s", moduleName),
 			"generate-fakes":     true,
+			"head-as-boolean":    true, // head method
 		}
 
 		tspConfig.OnlyEmit(typespecgoEmit)
@@ -287,6 +295,11 @@ func TestGeneratePrivateSDK(t *testing.T) {
 
 			if err = Go(gosdk, "vet", "./..."); err != nil {
 				log.Println("####go vet", err)
+			}else {
+				// merge go files
+				if err = mergego.Merge(gosdk, filepath.Join(gosdk, "merged.go")); err != nil {
+					log.Fatal(err)
+				}
 			}
 		}
 		// break

@@ -67,3 +67,17 @@ func AutorestCmd(workspace string, args ...string) (string, error) {
 
 	return output, err
 }
+
+
+func GoImports(dir string, args ...string) error {
+	cmd := exec.Command("goimports", args...)
+	cmd.Dir = dir
+
+	output, err := cmd.CombinedOutput()
+	fmt.Printf("###Command: %s\ngoimports %s\n%s", cmd.Dir, strings.Join(args, " "), string(output))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

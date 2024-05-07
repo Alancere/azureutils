@@ -12,7 +12,7 @@ func TestRunAutoRestGoTest(t *testing.T) {
 	autorest_go := "D:/Go/src/github.com/Azure/autorest.go/packages/autorest.go"
 	autorest_gotest := "D:/Go/src/github.com/Azure/autorest.go/packages/autorest.gotest"
 	tests := []string{
-		"--generate-sdk=false",
+		"--generate-sdk=true",
 		// autorest.GOTestOption.Example,
 		autorest.GOTestOption.FakeTest,
 		// autorest.GOTestOption.MockTest,
