@@ -18,7 +18,10 @@ func MergeGo(dir string, outfile string) error {
         return err
     }
 
-	merged := ast.MergePackageFiles(pkgs["armapicenter"], ast.FilterImportDuplicates)
+    merged := &ast.File{}
+    for k := range pkgs {
+        merged = ast.MergePackageFiles(pkgs[k], ast.FilterImportDuplicates)
+    }
 
     // Separate import declarations and other declarations
     var importDecls []ast.Decl
@@ -30,7 +33,7 @@ func MergeGo(dir string, outfile string) error {
             otherDecls = append(otherDecls, decl)
         }
     }
-
+    
     // Write import declarations first, then other declarations
     merged.Decls = append(importDecls, otherDecls...)
 
@@ -51,6 +54,14 @@ func MergeGo(dir string, outfile string) error {
 func Merge(dir string, outfile string) error {
     if outfile == "" {
         outfile = filepath.Join(dir, "merged.go")
+    }
+
+    _, err := os.Stat(filepath.Dir(outfile))
+    if err != nil {
+        err := os.MkdirAll(filepath.Dir(outfile), os.ModePerm)
+        if err != nil {
+            return err
+        }
     }
 
     if err := MergeGo(dir, outfile); err != nil {

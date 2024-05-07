@@ -16,3 +16,14 @@ func TestMerge(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestMergeFake(t *testing.T) {
+	dir := "./mypackage"   // replace with your package directory
+	dir = "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/apicenter/ApiCenter.Management/go/sdk/resourcemanager/apicenter/armapicenter/fake"
+	outfile := "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/apicenter/ApiCenter.Management/go/sdk/resourcemanager/apicenter/armapicenter/fake.go" // output file
+
+	err := mergego.Merge(dir, outfile)
+	if err != nil {
+		t.Fatal(err)
+	}
+}

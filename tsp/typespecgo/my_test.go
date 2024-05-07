@@ -148,7 +148,12 @@ func TestGenerateSDK(t *testing.T) {
 				log.Println("####go vet", err)
 			}else {
 				// merge go files
-				if err = mergego.Merge(gosdk, filepath.Join(gosdk, "merged.go")); err != nil {
+				if err = mergego.Merge(gosdk, filepath.Join("D:/tmp/typespecp-diff", filepath.Base(gosdk) + ".go")); err != nil {
+					log.Fatal(err)
+				}
+
+				// merge fake go files
+				if err = mergego.Merge(filepath.Join(gosdk, "fake"), filepath.Join("D:/tmp/typespecp-diff", filepath.Base(gosdk) + "_fake.go")); err != nil {
 					log.Fatal(err)
 				}
 			}
@@ -297,7 +302,12 @@ func TestGeneratePrivateSDK(t *testing.T) {
 				log.Println("####go vet", err)
 			}else {
 				// merge go files
-				if err = mergego.Merge(gosdk, filepath.Join(gosdk, "merged.go")); err != nil {
+				if err = mergego.Merge(gosdk, filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk) + ".go")); err != nil {
+					log.Fatal(err)
+				}
+
+				// merge fake go files
+				if err = mergego.Merge(filepath.Join(gosdk, "fake"), filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk) + "_fake.go")); err != nil {
 					log.Fatal(err)
 				}
 			}
