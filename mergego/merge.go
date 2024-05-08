@@ -13,7 +13,7 @@ import (
 
 func MergeGo(dir string, outfile string) error {
     fset := token.NewFileSet()
-    pkgs, err := parser.ParseDir(fset, dir, nil, 0)
+    pkgs, err := parser.ParseDir(fset, dir, nil, parser.ParseComments)
     if err != nil {
         return err
     }
