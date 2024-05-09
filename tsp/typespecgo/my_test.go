@@ -103,6 +103,8 @@ func TestGenerateSDK(t *testing.T) {
 			"emitter-output-dir": fmt.Sprintf("{project-root}/go/%s", moduleName),
 			"generate-fakes":     true,
 			"head-as-boolean":    true, // head method
+			"inject-spans": true,
+			"remove-unreferenced-types": true,
 		}
 
 		tspConfig.OnlyEmit(typespecgoEmit)

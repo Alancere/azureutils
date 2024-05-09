@@ -20,7 +20,7 @@ func MergeGo(dir string, outfile string) error {
 
     merged := &ast.File{}
     for k := range pkgs {
-        merged = ast.MergePackageFiles(pkgs[k], ast.FilterImportDuplicates)
+        merged = ast.MergePackageFiles(pkgs[k], ast.FilterImportDuplicates | ast.FilterUnassociatedComments)
     }
 
     // Separate import declarations and other declarations
