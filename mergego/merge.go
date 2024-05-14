@@ -7,13 +7,20 @@ import (
 	"go/token"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/Alancere/azureutils/common"
 )
 
 func MergeGo(dir string, outfile string) error {
     fset := token.NewFileSet()
-    pkgs, err := parser.ParseDir(fset, dir, nil, parser.ParseComments)
+
+    filter := func(info os.FileInfo) bool {
+        // Skip test files
+        return !strings.HasSuffix(info.Name(), "_test.go")
+    }
+
+    pkgs, err := parser.ParseDir(fset, dir, filter, parser.ParseComments)
     if err != nil {
         return err
     }
