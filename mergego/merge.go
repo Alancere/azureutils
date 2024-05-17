@@ -17,7 +17,16 @@ func MergeGo(dir string, outfile string) error {
 
     filter := func(info os.FileInfo) bool {
         // Skip test files
-        return !strings.HasSuffix(info.Name(), "_test.go")
+        if strings.HasSuffix(info.Name(), "_test.go") {
+            return false
+        }
+
+        if info.Name() == "build.go" {
+            return false
+        }
+
+        // return !strings.HasSuffix(info.Name(), "_test.go")
+        return true
     }
 
     pkgs, err := parser.ParseDir(fset, dir, filter, parser.ParseComments)

@@ -81,3 +81,14 @@ func GoImports(dir string, args ...string) error {
 
 	return nil
 }
+
+func Generate(dir string, args ...string) (string,error) {
+	cmd := exec.Command("generator", args...)
+	cmd.Dir = dir
+
+	combinedOutput, err := cmd.CombinedOutput()
+	output := fmt.Sprintf("###Command: %s\ngenerator %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
+	fmt.Println(output)
+	
+	return output, err
+}
