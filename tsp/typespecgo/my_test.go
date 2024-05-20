@@ -43,6 +43,7 @@ func TestGenerateSDK(t *testing.T) {
 
 	// 用于设置是否使用autorest生成go sdk
 	autorestGenerate := true
+	// autorestGenerate = false
 
 	configPaths, err := SearchTSP(specDir)
 	if err != nil {
@@ -112,6 +113,15 @@ func TestGenerateSDK(t *testing.T) {
 			"remove-unreferenced-types": true,
 		}
 
+		// typespce-go stutter
+		if strings.Contains(configPath, "azurelargeinstance") {
+			typespecgoOption["stutter"] = "azurelargeinstance"
+		}
+
+		if strings.Contains(configPath, "loadtestservice") {
+			typespecgoOption["stutter"] = "loadtestservice"
+		}
+
 		tspConfig.OnlyEmit(typespecgoEmit)
 		tspConfig.EditOptions(string(TypeSpec_GO), typespecgoOption, false)
 
@@ -123,7 +133,11 @@ func TestGenerateSDK(t *testing.T) {
 		// tsp install
 		TSP(filepath.Dir(configPath), "install")
 
-		output, tspErr := TSP(filepath.Dir(configPath), "compile", ".")
+		tspCompileOpts := [2]string{"compile", "."}
+		if existClientTSP(filepath.Dir(configPath)) {
+			tspCompileOpts[1] = "client.tsp"
+		}
+		output, tspErr := TSP(filepath.Dir(configPath), tspCompileOpts[0], tspCompileOpts[1])
 		if tspErr != nil {
 			tspErrs = append(tspErrs, tspErr)
 			// allErrMsg = append(allErrMsg, output)
@@ -487,4 +501,13 @@ func TestViper(t *testing.T) {
 	}
 
 	config.WriteConfig()
+}
+
+
+/*
+	当前目录是否存在 client.tsp
+*/
+func existClientTSP(dir string) bool {
+	_, err := os.Stat(filepath.Join(dir, "client.tsp"))
+	return err == nil
 }
