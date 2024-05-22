@@ -73,7 +73,7 @@ func TestGenerateSDK(t *testing.T) {
 		readmeGOMD := readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.go.md"))
 
 		// deep readme.md
-		readmeGOMD = deepReamd(configPath)
+		deepReamd(configPath, readmeGOMD)
 
 		module := readmeGOMD["module"]
 		moduleName := readmeGOMD["module-name"]
@@ -540,14 +540,11 @@ func stutter(configPath string, typespecgoOption map[string]any) {
 	}
 }
 
-func deepReamd(configPath string) map[string]any {
-	readmeGOMD := map[string]any{}
+func deepReamd(configPath string, readmeGOMD map[string]any) {
 
 	if strings.Contains(configPath, "Workloads.SAPDiscoverySite.Management") {
 		readmeGOMD = readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/Microsoft.Workloads/SAPDiscoverySites/readme.go.md"))
 	}else if strings.Contains(configPath, "Workloads.SAPMonitor.Management") {
 		readmeGOMD = readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/Microsoft.Workloads/monitors/readme.go.md"))
 	}
-
-	return readmeGOMD
 }
