@@ -69,8 +69,12 @@ func TestGenerateSDK(t *testing.T) {
 			continue
 		}
 
-		// read readme.go.md
+		// read readme.go.md  
 		readmeGOMD := readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.go.md"))
+
+		// deep readme.md
+		readmeGOMD = deepReamd(configPath)
+
 		module := readmeGOMD["module"]
 		moduleName := readmeGOMD["module-name"]
 		module = strings.Replace(module.(string), "$(module-name)", moduleName.(string), -1)
@@ -114,13 +118,7 @@ func TestGenerateSDK(t *testing.T) {
 		}
 
 		// typespce-go stutter
-		if strings.Contains(configPath, "azurelargeinstance") {
-			typespecgoOption["stutter"] = "azurelargeinstance"
-		}
-
-		if strings.Contains(configPath, "loadtestservice") {
-			typespecgoOption["stutter"] = "loadtestservice"
-		}
+		stutter(configPath, typespecgoOption)
 
 		tspConfig.OnlyEmit(typespecgoEmit)
 		tspConfig.EditOptions(string(TypeSpec_GO), typespecgoOption, false)
@@ -133,7 +131,7 @@ func TestGenerateSDK(t *testing.T) {
 		// tsp install
 		TSP(filepath.Dir(configPath), "install")
 
-		tspCompileOpts := [2]string{"compile", "."}
+		tspCompileOpts := [2]string{"compile", "main.tsp"}
 		if existClientTSP(filepath.Dir(configPath)) {
 			tspCompileOpts[1] = "client.tsp"
 		}
@@ -510,4 +508,46 @@ func TestViper(t *testing.T) {
 func existClientTSP(dir string) bool {
 	_, err := os.Stat(filepath.Join(dir, "client.tsp"))
 	return err == nil
+}
+
+func stutter(configPath string, typespecgoOption map[string]any) {
+	if strings.Contains(configPath, "azurelargeinstance") {
+		typespecgoOption["stutter"] = "azurelargeinstance"
+	}
+
+	if strings.Contains(configPath, "loadtestservice") {
+		typespecgoOption["stutter"] = "loadtestservice"
+	}
+
+	if strings.Contains(configPath, "mongocluster") {
+		typespecgoOption["stutter"] = "DocumentDB"
+	} 
+
+	if strings.Contains(configPath, "mpcnetworkfunction") {
+		typespecgoOption["stutter"] = "MobilePacketCore"
+	}
+
+	if strings.Contains(configPath, "playwrighttesting") {
+		typespecgoOption["stutter"] = "AzurePlaywrightService"
+	}
+
+	if strings.Contains(configPath, "sphere") {
+		typespecgoOption["stutter"] = "AzureSphere"
+	} 
+
+	if strings.Contains(configPath, "codesigning") { // !!!
+		typespecgoOption["stutter"] = "CodeSigning"
+	}
+}
+
+func deepReamd(configPath string) map[string]any {
+	readmeGOMD := map[string]any{}
+
+	if strings.Contains(configPath, "Workloads.SAPDiscoverySite.Management") {
+		readmeGOMD = readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/Microsoft.Workloads/SAPDiscoverySites/readme.go.md"))
+	}else if strings.Contains(configPath, "Workloads.SAPMonitor.Management") {
+		readmeGOMD = readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/Microsoft.Workloads/monitors/readme.go.md"))
+	}
+
+	return readmeGOMD
 }
