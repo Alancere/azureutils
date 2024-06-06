@@ -538,6 +538,10 @@ func stutter(configPath string, typespecgoOption map[string]any) {
 	if strings.Contains(configPath, "codesigning") { // !!!
 		typespecgoOption["stutter"] = "CodeSigning"
 	}
+
+	if strings.Contains(configPath, "azurefleet") {
+		typespecgoOption["stutter"] = "AzureFleet"
+	}
 }
 
 func deepReamd(configPath string, readmeGOMD map[string]any) {

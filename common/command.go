@@ -92,3 +92,14 @@ func Generate(dir string, args ...string) (string,error) {
 	
 	return output, err
 }
+
+func TestProxy(dir string, args ...string) (string,error) {
+	cmd := exec.Command("test-proxy", args...)
+	cmd.Dir = dir
+
+	combinedOutput, err := cmd.CombinedOutput()
+	output := fmt.Sprintf("###Command: %s\ntest-proxy %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
+	fmt.Println(output)
+	
+	return output, err
+}

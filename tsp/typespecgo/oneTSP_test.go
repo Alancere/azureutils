@@ -23,7 +23,7 @@ func TestOneTSP(t *testing.T) {
 	autorestGenerate = false
 
 	// tspconfig.yaml 绝对路径
-	configPath := ""
+	configPath := "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/azurefleet/AzureFleet.Management/tspconfig.yaml"
 
 	// read readme.go.md
 	readmeGOMD := readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.go.md"))
@@ -88,6 +88,10 @@ func TestOneTSP(t *testing.T) {
 	if strings.Contains(configPath, "codesigning") { // !!!
 		typespecgoOption["stutter"] = "CodeSigning"
 	}
+
+	if strings.Contains(configPath, "azurefleet") {
+		typespecgoOption["stutter"] = "AzureFleet"
+	} 
 
 	tspConfig.OnlyEmit(typespecgoEmit)
 	tspConfig.EditOptions(string(TypeSpec_GO), typespecgoOption, false)
