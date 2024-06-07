@@ -1,9 +1,12 @@
 package typespecgo
 
 import (
+	"io"
+	"net/http"
 	"os"
 	"regexp"
 	"slices"
+	"strings"
 
 	"github.com/goccy/go-yaml"
 )
@@ -77,18 +80,34 @@ func (r RuleRef) Validate() bool {
 
 func NewTSPConfig(tspconfigYaml string) (*TSPConfig, error) {
 	tspConfig := TSPConfig{}
-
-	data, err := os.ReadFile(tspconfigYaml)
-	if err != nil {
-		return nil, err
+	tspConfig.Path = tspconfigYaml
+	
+	var err error
+	var data []byte
+	if strings.HasPrefix(tspconfigYaml, "http") {
+		// http path
+		resp, err := http.Get(tspconfigYaml)
+		if err != nil {
+			return nil, err
+		}
+		defer resp.Body.Close()
+		data, err = io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// local path
+		data, err = os.ReadFile(tspconfigYaml)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	err = yaml.Unmarshal(data, &(tspConfig.TypeSpecProjectSchema))
 	if err != nil {
 		return nil, err
 	}
-
-	tspConfig.Path = tspconfigYaml
+	
 	return &tspConfig, err
 }
 
