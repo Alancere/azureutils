@@ -18,21 +18,21 @@ func NewPullRequest() *PullRequest {
 }
 
 func (pr *PullRequest) Check(repo string) error {
-	//var err error
+	// var err error
 	var prs []*github.PullRequest
 
 	for i := 1; i <= 5; i++ {
 		temp, _, err := pr.client.PullRequests.List(context.Background(), Owner, repo, &github.PullRequestListOptions{
 			State: "open",
-			//Base: "main",
-			//Sort: "desc"
+			// Base: "main",
+			// Sort: "desc"
 			ListOptions: github.ListOptions{
 				Page:    i,
 				PerPage: 1000,
 			},
 		})
 		if err != nil {
-			//return nil, err
+			// return nil, err
 			return err
 		}
 		prs = append(prs, temp...)
@@ -74,7 +74,7 @@ func (pr *PullRequest) Check(repo string) error {
 		if isNoRecentActivity(l.Labels) {
 			continue
 		}
-		if havaLabel(l.Labels, GoBreakingChange) || havaLabel(l.Labels, BreakingChange_GO_SDK) || havaLabel(l.Labels, BreakingChange_GO_SDK_Suppression){
+		if havaLabel(l.Labels, GoBreakingChange) || havaLabel(l.Labels, BreakingChange_GO_SDK) || havaLabel(l.Labels, BreakingChange_GO_SDK_Suppression) {
 			newPullRequests = append(newPullRequests, l)
 		}
 	}
@@ -104,8 +104,8 @@ func (pr *PullRequest) Check(repo string) error {
 
 		if b1 && b2 && b3 {
 			flag := false
-			if havaLabel(l.Labels, GoApprovedBreakingChange) || havaLabel(l.Labels, GoPrivateApproveBreakingChange) || 
-			havaLabel(l.Labels, BreakingChange_GO_SDK_Approved) || havaLabel(l.Labels, BreakingChange_GO_SDK_Suppression_Approved){
+			if havaLabel(l.Labels, GoApprovedBreakingChange) || havaLabel(l.Labels, GoPrivateApproveBreakingChange) ||
+				havaLabel(l.Labels, BreakingChange_GO_SDK_Approved) || havaLabel(l.Labels, BreakingChange_GO_SDK_Suppression_Approved) {
 				flag = true
 			}
 			approves = append(approves, Approve{
@@ -149,5 +149,5 @@ type Approve struct {
 
 func (a Approve) String() string {
 	return fmt.Sprintf("%s reviewRequire: %t, armReview: %t, arcReview: %t\n", a.url, a.reviewRequire, a.armReview, a.arcReview)
-	//return s
+	// return s
 }

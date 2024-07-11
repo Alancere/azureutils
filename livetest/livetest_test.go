@@ -16,13 +16,12 @@ import (
 )
 
 func TestAllLiveTestARMService(t *testing.T) {
-
 	sdkRoot := "D:/Go/src/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager"
 	livetests, err := livetest.AllLiveTestARMService(sdkRoot)
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	fmt.Println("live test count:", len(livetests))
 	for _, v := range livetests {
 		fmt.Println(v)
@@ -44,7 +43,7 @@ func TestAllLiveTestARMService(t *testing.T) {
 
 		// write utils_test.go 到当前目录下
 		x := strings.Split(v, "\\")[len(strings.Split(v, "\\"))-1]
-		err = livetest.WriteFile(v, "utils_test.go", []byte(fmt.Sprintf(utilsTestData, x,testdataPath)))
+		err = livetest.WriteFile(v, "utils_test.go", []byte(fmt.Sprintf(utilsTestData, x, testdataPath)))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -57,7 +56,6 @@ func TestAllLiveTestARMService(t *testing.T) {
 
 		common.Go(v, "mod", "tidy")
 	}
-
 }
 
 var utilsTestData = `//go:build go1.18
@@ -93,7 +91,7 @@ func run(m *testing.M) int {
 
 // 在go.mod 文件末尾添加 replaces
 func addModReplace(gomod string, replace ...string) error {
-	f, err := os.OpenFile(gomod, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(gomod, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
 		return err
 	}
@@ -118,11 +116,11 @@ func TestUpdateAssets(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	fmt.Println("live test count:", len(livetests))
 	for _, v := range livetests {
 		fmt.Println(v)
-		
+
 		// go test -v .
 		_, err := common.Go(v, "test", "-v", "--count=1", ".")
 		if err != nil {
@@ -151,7 +149,6 @@ func TestUpdateAssets(t *testing.T) {
 
 // passed
 func TestUseInternalV3(t *testing.T) {
-
 	sdkRoot := "D:/Go/src/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager"
 	livetests, err := livetest.AllLiveTestARMService(sdkRoot)
 	if err != nil {
@@ -165,8 +162,8 @@ func TestUseInternalV3(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !strings.Contains(string(data), "UsePipelineProxy: false") {
-			ci, err := os.OpenFile(filepath.Join(v, "ci.yml"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-			defer func ()  {
+			ci, err := os.OpenFile(filepath.Join(v, "ci.yml"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+			defer func() {
 				ci.Close()
 			}()
 			if err != nil {
@@ -203,7 +200,7 @@ func TestUseInternalV3(t *testing.T) {
 						return nil
 					}
 
-					err = os.WriteFile(path, newData, 0644)
+					err = os.WriteFile(path, newData, 0o644)
 					if err != nil {
 						return err
 					}

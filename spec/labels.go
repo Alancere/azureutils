@@ -53,17 +53,17 @@ const (
 )
 
 // 新规则
-const(
-	BreakingChange_GO_SDK label = "BreakingChange-Go-Sdk"
+const (
+	BreakingChange_GO_SDK         label = "BreakingChange-Go-Sdk"
 	BreakingChange_JavaScript_SDK label = "BreakingChange-JavaScript-Sdk"
-	BreakingChange_Python_SDK label = "BreakingChange-Python-Sdk"
+	BreakingChange_Python_SDK     label = "BreakingChange-Python-Sdk"
 
-	BreakingChange_GO_SDK_Suppression label = "BreakingChange-Go-Sdk-Suppression"
+	BreakingChange_GO_SDK_Suppression         label = "BreakingChange-Go-Sdk-Suppression"
 	BreakingChange_JavaScript_SDK_Suppression label = "BreakingChange-JavaScript-Sdk-Suppression"
-	BreakingChange_Python_SDK_Suppression label = "BreakingChange-Python-Sdk-Suppression"
+	BreakingChange_Python_SDK_Suppression     label = "BreakingChange-Python-Sdk-Suppression"
 
 	// Changes are not breaking at the REST API level and have at most minor impact to generated SDKs
-	BreakingChange_Approved_Benign label =  "BreakingChange-Approved-Benign"
+	BreakingChange_Approved_Benign label = "BreakingChange-Approved-Benign"
 	// Changes are to correct the REST API definition to correctly describe service behavior
 	BreakingChange_Approved_BigFix label = "BreakingChange-Approved-BugFix"
 	// Changes were reviewed and approved in a previous PR
@@ -71,15 +71,14 @@ const(
 	// Changes are not backward compatible and may cause customer disruption.
 	BreakingChange_Approved_UserImpact label = "BreakingChange-Approved-UserImpact"
 
-	BreakingChange_GO_SDK_Approved label = "BreakingChange-Go-Sdk-Approved"
+	BreakingChange_GO_SDK_Approved         label = "BreakingChange-Go-Sdk-Approved"
 	BreakingChange_JavaScript_SDK_Approved label = "BreakingChange-JavaScript-Sdk-Approved"
-	BreakingChange_Python_SDK_Approved label = "BreakingChange-Python-Sdk-Approved"
+	BreakingChange_Python_SDK_Approved     label = "BreakingChange-Python-Sdk-Approved"
 
-	BreakingChange_GO_SDK_Suppression_Approved label = "BreakingChange-Go-Sdk-Suppression-Approved"
+	BreakingChange_GO_SDK_Suppression_Approved         label = "BreakingChange-Go-Sdk-Suppression-Approved"
 	BreakingChange_JavaScript_SDK_Suppression_Approved label = "BreakingChange-JavaScript-Sdk-Suppression-Approved"
-	BreakingChange_Python_SDK_Suppression_Approved label = "BreakingChange-Python-Sdk-Suppression-Approved"
+	BreakingChange_Python_SDK_Suppression_Approved     label = "BreakingChange-Python-Sdk-Suppression-Approved"
 )
-
 
 func isApprovedBreakingChange(labels []*github.Label) (bool, bool) { // reviewRequired, approved
 
@@ -104,7 +103,6 @@ func isApprovedBreakingChange(labels []*github.Label) (bool, bool) { // reviewRe
 }
 
 func isARMSignedOff(labels []*github.Label) (bool, bool) {
-
 	armReview := false
 	signedOff := false
 
@@ -126,7 +124,6 @@ func isARMSignedOff(labels []*github.Label) (bool, bool) {
 }
 
 func isArcSignedOff(labels []*github.Label) (bool, bool) {
-
 	arcReview := false
 	signedOff := false
 

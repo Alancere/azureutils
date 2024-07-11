@@ -1,9 +1,12 @@
 package typespecgo
 
 import (
+	"io"
+	"net/http"
 	"os"
 	"regexp"
 	"slices"
+	"strings"
 
 	"github.com/goccy/go-yaml"
 )
@@ -77,10 +80,27 @@ func (r RuleRef) Validate() bool {
 
 func NewTSPConfig(tspconfigYaml string) (*TSPConfig, error) {
 	tspConfig := TSPConfig{}
+	tspConfig.Path = tspconfigYaml
 
-	data, err := os.ReadFile(tspconfigYaml)
-	if err != nil {
-		return nil, err
+	var err error
+	var data []byte
+	if strings.HasPrefix(tspconfigYaml, "http") {
+		// http path
+		resp, err := http.Get(tspconfigYaml)
+		if err != nil {
+			return nil, err
+		}
+		defer resp.Body.Close()
+		data, err = io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// local path
+		data, err = os.ReadFile(tspconfigYaml)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	err = yaml.Unmarshal(data, &(tspConfig.TypeSpecProjectSchema))
@@ -88,7 +108,6 @@ func NewTSPConfig(tspconfigYaml string) (*TSPConfig, error) {
 		return nil, err
 	}
 
-	tspConfig.Path = tspconfigYaml
 	return &tspConfig, err
 }
 
@@ -106,18 +125,18 @@ func (tc *TSPConfig) OnlyEmit(emit string) {
 	tc.Emit = []string{emit}
 }
 
-func (tc *TSPConfig) EditOptions(emit string, option any, append bool) {
+func (tc *TSPConfig) EditOptions(emit string, option map[string]any, append bool) {
 	if tc.Options == nil {
 		tc.Options = make(map[string]any)
 	}
 
 	if _, ok := tc.Options[emit]; ok {
 		if append {
-			op1 := tc.Options
-			for k, v := range option.(map[string]any) {
+			op1 := tc.Options[emit].(map[string]any)
+			for k, v := range option {
 				op1[k] = v
 			}
-			tc.Options = op1
+			tc.Options[emit] = op1
 		} else {
 			tc.Options[emit] = option
 		}

@@ -91,7 +91,7 @@ func TestOneTSP(t *testing.T) {
 
 	if strings.Contains(configPath, "azurefleet") {
 		typespecgoOption["stutter"] = "AzureFleet"
-	} 
+	}
 
 	tspConfig.OnlyEmit(typespecgoEmit)
 	tspConfig.EditOptions(string(TypeSpec_GO), typespecgoOption, false)
@@ -195,13 +195,13 @@ func TestOneTSP(t *testing.T) {
 }
 
 // 等generator tool支持 --specify-readme-path 时 替换
-func readmePathExec(dir string, args ...string) (string,error) {
+func readmePathExec(dir string, args ...string) (string, error) {
 	cmd := exec.Command("readmepath", args...)
 	cmd.Dir = dir
 
 	combinedOutput, err := cmd.CombinedOutput()
 	output := fmt.Sprintf("###Command: %s\ngenerator %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
 	fmt.Println(output)
-	
+
 	return output, err
 }

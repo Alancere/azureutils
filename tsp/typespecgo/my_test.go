@@ -39,7 +39,11 @@ func TestGenerateSDK(t *testing.T) {
 	specDir := "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs"
 	sdkDir := "D:/Go/src/github.com/Azure/dev/azure-sdk-for-go"
 	typespecgoEmit := "D:/Go/src/github.com/Azure/autorest.go/packages/typespec-go"
+	// typespecgoEmit = "@azure-tools/typespec-go"
 	// typespecgoEmit = "D:/Go/src/github.com/Azure/autorest.go/packages/typespec-go/azure-tools-typespec-go-0.1.0-dev.1.tgz" // 不能用这种方式
+
+	specDir = "D:/Go/src/github.com/Azure/azure-rest-api-specs"
+	sdkDir = "D:/Go/src/github.com/Azure/azure-sdk-for-go"
 
 	// 用于设置是否使用autorest生成go sdk
 	autorestGenerate := true
@@ -69,7 +73,7 @@ func TestGenerateSDK(t *testing.T) {
 			continue
 		}
 
-		// read readme.go.md  
+		// read readme.go.md
 		readmeGOMD := readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.go.md"))
 
 		// deep readme.md
@@ -81,7 +85,7 @@ func TestGenerateSDK(t *testing.T) {
 		moduleVersion := "0.1.0" // default value, need from autorest.md get
 		versions := []string{"0.1.0", "1.0.0", "2.0.0", "30.0.0", "0.5.0-beta.1", "2.2.0-beta.2"}
 		moduleVersion = versions[rand.Intn(6)]
-		
+
 		// tsp compile 之前把go目录和error.log删除
 		gosdk := filepath.Join(filepath.Dir(configPath), "go", moduleName.(string))
 		os.RemoveAll(gosdk)
@@ -108,12 +112,12 @@ func TestGenerateSDK(t *testing.T) {
 		}
 
 		typespecgoOption := map[string]any{
-			"module":             module,
-			"module-version":     moduleVersion,
-			"emitter-output-dir": fmt.Sprintf("{project-root}/go/%s", moduleName),
-			"generate-fakes":     true,
-			"head-as-boolean":    true, // head method
-			"inject-spans": true,
+			"module":                    module,
+			"module-version":            moduleVersion,
+			"emitter-output-dir":        fmt.Sprintf("{project-root}/go/%s", moduleName),
+			"generate-fakes":            true,
+			"head-as-boolean":           true, // head method
+			"inject-spans":              true,
 			"remove-unreferenced-types": true,
 		}
 
@@ -165,14 +169,14 @@ func TestGenerateSDK(t *testing.T) {
 
 			if err = Go(tspsdk, "vet", "./..."); err != nil {
 				log.Println("##tsp##go vet", err)
-			}else {
+			} else {
 				// merge go files
-				if err = mergego.Merge(tspsdk, filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk) + ".go")); err != nil {
+				if err = mergego.Merge(tspsdk, filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk)+".go")); err != nil {
 					log.Fatal(err)
 				}
 
 				// merge fake go files
-				if err = mergego.Merge(filepath.Join(tspsdk, "fake"), filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk) + "_fake.go")); err != nil {
+				if err = mergego.Merge(filepath.Join(tspsdk, "fake"), filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk)+"_fake.go")); err != nil {
 					log.Fatal(err)
 				}
 			}
@@ -180,15 +184,15 @@ func TestGenerateSDK(t *testing.T) {
 			// autorest generate go sdk
 			if autorestGenerate {
 				autorestsdk := filepath.Join(sdkDir, moduleName.(string))
-				serviceName,armServiceName := armName(moduleName.(string))
+				serviceName, armServiceName := armName(moduleName.(string))
 				specName := filepath.Base(filepath.Join(filepath.Dir(configPath), "../"))
 				autorestOps := []string{
 					"release-v2",
-					sdkDir, 
+					sdkDir,
 					specDir,
 					serviceName, armServiceName,
 					fmt.Sprintf("--spec-rp-name=%s", specName),
-					"--skip-generate-example", 
+					"--skip-generate-example",
 					"--skip-create-branch",
 				}
 				defaultTag, err := readmemd(filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.md"))
@@ -198,20 +202,20 @@ func TestGenerateSDK(t *testing.T) {
 				if defaultTag != "" {
 					autorestOps = append(autorestOps, fmt.Sprintf("--package-config=%s", strings.TrimSpace(defaultTag)))
 				}
-				output, err :=  common.Generate(filepath.Join(sdkDir, "../"), autorestOps...)
+				output, err := common.Generate(filepath.Join(sdkDir, "../"), autorestOps...)
 				if err != nil {
 					log.Println("##autorest##", err)
-				}else {
+				} else {
 					if err = Go(autorestsdk, "vet", "./..."); err != nil {
 						log.Println("##autorest##go vet", err)
-					}else {
+					} else {
 						// merge go files
-						if err = mergego.Merge(autorestsdk, filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk) + ".go")); err != nil {
+						if err = mergego.Merge(autorestsdk, filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk)+".go")); err != nil {
 							log.Fatal(err)
 						}
-		
+
 						// merge fake go files
-						if err = mergego.Merge(filepath.Join(autorestsdk, "fake"), filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk) + "_fake.go")); err != nil {
+						if err = mergego.Merge(filepath.Join(autorestsdk, "fake"), filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk)+"_fake.go")); err != nil {
 							log.Fatal(err)
 						}
 					}
@@ -313,12 +317,12 @@ func TestGeneratePrivateSDK(t *testing.T) {
 		}
 
 		typespecgoOption := map[string]any{
-			"module":             module,
-			"module-version":     moduleVersion,
-			"emitter-output-dir": fmt.Sprintf("{project-root}/go/%s", moduleName),
-			"generate-fakes":     true,
-			"head-as-boolean":    true, // head method
-			"inject-spans": true,
+			"module":                    module,
+			"module-version":            moduleVersion,
+			"emitter-output-dir":        fmt.Sprintf("{project-root}/go/%s", moduleName),
+			"generate-fakes":            true,
+			"head-as-boolean":           true, // head method
+			"inject-spans":              true,
 			"remove-unreferenced-types": true,
 		}
 
@@ -363,14 +367,14 @@ func TestGeneratePrivateSDK(t *testing.T) {
 
 			if err = Go(gosdk, "vet", "./..."); err != nil {
 				log.Println("####go vet", err)
-			}else {
+			} else {
 				// merge go files
-				if err = mergego.Merge(gosdk, filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk) + ".go")); err != nil {
+				if err = mergego.Merge(gosdk, filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk)+".go")); err != nil {
 					log.Fatal(err)
 				}
 
 				// merge fake go files
-				if err = mergego.Merge(filepath.Join(gosdk, "fake"), filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk) + "_fake.go")); err != nil {
+				if err = mergego.Merge(filepath.Join(gosdk, "fake"), filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk)+"_fake.go")); err != nil {
 					log.Fatal(err)
 				}
 			}
@@ -419,7 +423,6 @@ func readmegomd(path string) map[string]any {
 }
 
 func readmemd(path string) (string, error) {
-
 	md, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
@@ -437,7 +440,7 @@ func readmemd(path string) (string, error) {
 
 func armName(module string) (string, string) {
 	a, _ := strings.CutPrefix(module, "sdk/resourcemanager/")
-	b,af,_ := strings.Cut(a, "/")
+	b, af, _ := strings.Cut(a, "/")
 	return b, af
 }
 
@@ -501,9 +504,8 @@ func TestViper(t *testing.T) {
 	config.WriteConfig()
 }
 
-
 /*
-	当前目录是否存在 client.tsp
+当前目录是否存在 client.tsp
 */
 func existClientTSP(dir string) bool {
 	_, err := os.Stat(filepath.Join(dir, "client.tsp"))
@@ -520,8 +522,8 @@ func stutter(configPath string, typespecgoOption map[string]any) {
 	}
 
 	if strings.Contains(configPath, "mongocluster") {
-		typespecgoOption["stutter"] = "DocumentDB"
-	} 
+		typespecgoOption["stutter"] = "MongoCluster" // DocumentDB
+	}
 
 	if strings.Contains(configPath, "mpcnetworkfunction") {
 		typespecgoOption["stutter"] = "MobilePacketCore"
@@ -533,7 +535,7 @@ func stutter(configPath string, typespecgoOption map[string]any) {
 
 	if strings.Contains(configPath, "sphere") {
 		typespecgoOption["stutter"] = "AzureSphere"
-	} 
+	}
 
 	if strings.Contains(configPath, "codesigning") { // !!!
 		typespecgoOption["stutter"] = "CodeSigning"
@@ -545,10 +547,9 @@ func stutter(configPath string, typespecgoOption map[string]any) {
 }
 
 func deepReamd(configPath string, readmeGOMD map[string]any) {
-
 	if strings.Contains(configPath, "Workloads.SAPDiscoverySite.Management") {
 		readmeGOMD = readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/Microsoft.Workloads/SAPDiscoverySites/readme.go.md"))
-	}else if strings.Contains(configPath, "Workloads.SAPMonitor.Management") {
+	} else if strings.Contains(configPath, "Workloads.SAPMonitor.Management") {
 		readmeGOMD = readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/Microsoft.Workloads/monitors/readme.go.md"))
 	}
 }

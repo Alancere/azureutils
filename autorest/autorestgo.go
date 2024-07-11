@@ -21,4 +21,3 @@ func AutorestGo(outputFolder, autorestMDPath string, opts ...string) error {
 
 	return nil
 }
-
