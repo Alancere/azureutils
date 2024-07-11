@@ -14,14 +14,14 @@ import (
 var checkCmd = &cobra.Command{
 	Use:   "check",
 	Short: "check azure specs",
-	Long: ``,
+	Long:  ``,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Printf("### check %s ###", spec.PublicRepository)
 		err := spec.NewPullRequest().Check(spec.PublicRepository)
 		if err != nil {
 			return err
 		}
-	
+
 		fmt.Printf("### check %s ###", spec.PrivateRepository)
 		err = spec.NewPullRequest().Check(spec.PrivateRepository)
 		if err != nil {

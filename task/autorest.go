@@ -16,7 +16,7 @@ import (
 var autorestLog *slog.Logger
 
 func init() {
-	l, err := os.OpenFile("autorest.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	l, err := os.OpenFile("autorest.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o666)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,7 +39,6 @@ func RunAutoRestGoTest(sdkPath string, autorestgo, autorestgotest string, tests 
 		outputFolder := s.LocalPath
 		autorestMd := filepath.Join(s.LocalPath, "autorest.md")
 
-
 		// --generate-sdk=false
 		if autorestgo == "" {
 			autorestgo = "@autorset/go@4.0.0-preview.63"
@@ -50,7 +49,7 @@ func RunAutoRestGoTest(sdkPath string, autorestgo, autorestgotest string, tests 
 		args := fmt.Sprintf(`--use=%s --use=%s --go --track2 --output-folder=%s --clear-output-folder=false --go.clear-output-folder=false --honor-body-placement=true --remove-unreferenced-types=true `, autorestgo, autorestgotest, outputFolder)
 		args += strings.Join(tests, " ")
 		args += fmt.Sprintf(" %s", autorestMd)
-		output,err := common.AutorestCmd(s.LocalPath, strings.Split(args, " ")...)
+		output, err := common.AutorestCmd(s.LocalPath, strings.Split(args, " ")...)
 		if err != nil {
 			autorestLog.Error("AutorestCmd", err, output)
 			continue
@@ -70,7 +69,7 @@ func RunAutoRestGoTest(sdkPath string, autorestgo, autorestgotest string, tests 
 			continue
 		}
 
-		// go vet 
+		// go vet
 		output, err = common.Go(s.LocalPath, "vet", "./...")
 		if err != nil {
 			autorestLog.Error("GoVet", err, output)

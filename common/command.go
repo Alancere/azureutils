@@ -20,14 +20,14 @@ func TSP(dir string, args ...string) (string, error) {
 	return output, nil
 }
 
-func Go(dir string, args ...string) (string,error) {
+func Go(dir string, args ...string) (string, error) {
 	cmd := exec.Command("go", args...)
 	cmd.Dir = dir
 
 	combinedOutput, err := cmd.CombinedOutput()
 	output := fmt.Sprintf("###Command: %s\ngo %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
 	fmt.Println(output)
-	
+
 	return output, err
 }
 
@@ -68,7 +68,6 @@ func AutorestCmd(workspace string, args ...string) (string, error) {
 	return output, err
 }
 
-
 func GoImports(dir string, args ...string) error {
 	cmd := exec.Command("goimports", args...)
 	cmd.Dir = dir
@@ -82,24 +81,24 @@ func GoImports(dir string, args ...string) error {
 	return nil
 }
 
-func Generate(dir string, args ...string) (string,error) {
+func Generate(dir string, args ...string) (string, error) {
 	cmd := exec.Command("generator", args...)
 	cmd.Dir = dir
 
 	combinedOutput, err := cmd.CombinedOutput()
 	output := fmt.Sprintf("###Command: %s\ngenerator %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
 	fmt.Println(output)
-	
+
 	return output, err
 }
 
-func TestProxy(dir string, args ...string) (string,error) {
+func TestProxy(dir string, args ...string) (string, error) {
 	cmd := exec.Command("test-proxy", args...)
 	cmd.Dir = dir
 
 	combinedOutput, err := cmd.CombinedOutput()
 	output := fmt.Sprintf("###Command: %s\ntest-proxy %s\n%s", cmd.Dir, strings.Join(args, " "), string(combinedOutput))
 	fmt.Println(output)
-	
+
 	return output, err
 }
