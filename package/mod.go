@@ -12,17 +12,31 @@ import (
 	"golang.org/x/mod/modfile"
 )
 
+// 获取go.mod文件信息
+func ModFile(goModPath string) (*modfile.File, error) {
+	if filepath.Base(goModPath) != "go.mod" {
+		return nil, fmt.Errorf("go.mod file path is invalid: %s", goModPath)
+	}
+
+	data, err := os.ReadFile(goModPath)
+	if err != nil {
+		return nil, err
+	}
+
+	modFile, err := modfile.Parse(goModPath, data, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return modFile, nil
+}
+
 var ErrInvalidModule = fmt.Errorf("go.mod does not allow to include other versions of module")
 
 // 校验go.mod
 func GoModValidate(packagePath string) error {
 	goModPath := filepath.Join(packagePath, "go.mod")
-	data, err := os.ReadFile(goModPath)
-	if err != nil {
-		return err
-	}
-
-	modFile, err := modfile.Parse(goModPath, data, nil)
+	modFile, err := ModFile(goModPath)
 	if err != nil {
 		return err
 	}
