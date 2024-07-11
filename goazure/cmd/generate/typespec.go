@@ -9,9 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	tspConfigPath string
-)
+var tspConfigPath string
 
 func init() {
 	GenerateCmd.AddCommand(typespecCmd)
@@ -52,4 +50,3 @@ var typespecCmd = &cobra.Command{
 		return nil
 	},
 }
-

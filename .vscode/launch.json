@@ -98,5 +98,29 @@
                 "TestOneTSP"
             ]
         },
+        {
+            "name": "TestLogDemo",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}/logger",
+            "args": [
+                "-test.v",
+                "-test.run",
+                "TestLogDemo"
+            ]
+        }, 
+        {
+            "name": "TestGenerateTool_Support_TSP",
+            "type": "go",
+            "request": "launch",
+            "mode": "test",
+            "program": "${workspaceFolder}/tsp/typespecgo",
+            "args": [
+                "-test.v",
+                "-test.run",
+                "TestGenerateTool_Support_TSP"
+            ]
+        },
     ]
 }

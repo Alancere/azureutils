@@ -115,7 +115,7 @@ func cutConstant(c string) (string, error) {
 	return strings.Trim(strings.TrimSpace(after), "\""), nil
 }
 
-//  response sdkName and armName
+// response sdkName and armName
 func (m Module) GetSDKAndArm() (string, string) {
 	splits := strings.Split(m.ModuleName, "/")
 	return splits[len(splits)-2], splits[len(splits)-1]

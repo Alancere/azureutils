@@ -81,7 +81,7 @@ func (r RuleRef) Validate() bool {
 func NewTSPConfig(tspconfigYaml string) (*TSPConfig, error) {
 	tspConfig := TSPConfig{}
 	tspConfig.Path = tspconfigYaml
-	
+
 	var err error
 	var data []byte
 	if strings.HasPrefix(tspconfigYaml, "http") {
@@ -107,7 +107,7 @@ func NewTSPConfig(tspconfigYaml string) (*TSPConfig, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &tspConfig, err
 }
 
@@ -125,18 +125,18 @@ func (tc *TSPConfig) OnlyEmit(emit string) {
 	tc.Emit = []string{emit}
 }
 
-func (tc *TSPConfig) EditOptions(emit string, option any, append bool) {
+func (tc *TSPConfig) EditOptions(emit string, option map[string]any, append bool) {
 	if tc.Options == nil {
 		tc.Options = make(map[string]any)
 	}
 
 	if _, ok := tc.Options[emit]; ok {
 		if append {
-			op1 := tc.Options
-			for k, v := range option.(map[string]any) {
+			op1 := tc.Options[emit].(map[string]any)
+			for k, v := range option {
 				op1[k] = v
 			}
-			tc.Options = op1
+			tc.Options[emit] = op1
 		} else {
 			tc.Options[emit] = option
 		}

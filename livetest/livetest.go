@@ -11,7 +11,6 @@ import (
 
 // go.mod 包含 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal 即当前arm service有live test
 func AllLiveTestARMService(root string) ([]string, error) {
-
 	livetests := make([]string, 0, 100)
 
 	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
@@ -19,7 +18,7 @@ func AllLiveTestARMService(root string) ([]string, error) {
 			return err
 		}
 
-		if !d.IsDir() || !strings.Contains(path, "arm"){
+		if !d.IsDir() || !strings.Contains(path, "arm") {
 			return nil
 		}
 
@@ -28,7 +27,7 @@ func AllLiveTestARMService(root string) ([]string, error) {
 			return nil
 		}
 
-		// read go.mod 
+		// read go.mod
 		data, err := os.ReadFile(filepath.Join(path, "go.mod"))
 		if err != nil {
 			log.Println("read go.mod err:", err)
@@ -41,7 +40,6 @@ func AllLiveTestARMService(root string) ([]string, error) {
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +69,6 @@ func WriteFile(path, fName string, data []byte) error {
 }
 
 func GetTestdataPath(livetest string) (string, error) {
-
 	testdataPath := ""
 
 	err := filepath.WalkDir(livetest, func(path string, d fs.DirEntry, err error) error {
@@ -80,7 +77,7 @@ func GetTestdataPath(livetest string) (string, error) {
 		}
 
 		if strings.Contains(path, "_live_test.go") {
-			data,err := os.ReadFile(path)
+			data, err := os.ReadFile(path)
 			if err != nil {
 				return err
 			}
@@ -91,7 +88,6 @@ func GetTestdataPath(livetest string) (string, error) {
 
 		return nil
 	})
-
 	if err != nil {
 		return "", err
 	}
