@@ -63,21 +63,14 @@ func ReplaceImport(sourceFile string, baseModule string, majorVersion uint64) er
 			newPath := baseModule
 			if after != "" {
 				before, sub, _ := strings.Cut(strings.TrimLeft(after, "/"), "/")
-				if regexp.MustCompile(`^v\d+$`).MatchString(before) {
-					if majorVersion > 1 {
-						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
-					}
-					if sub != "" {
-						newPath = fmt.Sprintf("%s/%s", newPath, sub)
-					}
-				} else {
-					if majorVersion > 1 {
-						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
-					}
+				if majorVersion > 1 {
+					newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
+				}
+				if !regexp.MustCompile(`^v\d+$`).MatchString(before) {
 					newPath = fmt.Sprintf("%s/%s", newPath, before)
-					if sub != "" {
-						newPath = fmt.Sprintf("%s/%s", newPath, sub)
-					}
+				}
+				if sub != "" {
+					newPath = fmt.Sprintf("%s/%s", newPath, sub)
 				}
 			} else {
 				if majorVersion > 1 {

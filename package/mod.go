@@ -73,3 +73,8 @@ func EditModule(packagePath, newModule string) error {
 	_, err := common.Go(packagePath, "mod", "edit", "-module", newModule)
 	return err
 }
+
+func EditModRequired(packagePath, newModule string) error {
+	_, err := common.Go(packagePath, "mod", "edit", "-require", newModule)
+	return err
+}
