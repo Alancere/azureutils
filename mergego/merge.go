@@ -1,6 +1,7 @@
 package mergego
 
 import (
+	"errors"
 	"go/ast"
 	"go/format"
 	"go/parser"
@@ -16,6 +17,11 @@ import (
 func Merge(dir string, outfile string, mergeTest bool) error {
 	if outfile == "" {
 		outfile = filepath.Join(dir, "merged.go")
+	}
+
+	// must .go file
+	if !strings.HasSuffix(outfile, ".go") {
+		return errors.New("output file must be a .go file")
 	}
 
 	_, err := os.Stat(filepath.Dir(outfile))
@@ -75,7 +81,7 @@ func MergeGo(dir string, outfile string) error {
 func MergeTest(dir string, outfile string) error {
 	filter := func(info fs.FileInfo) bool {
 		// skip live test
-		if strings.HasSuffix(info.Name(), "_live_test.go") || strings.HasSuffix(info.Name(), "utils_test.go"){
+		if strings.HasSuffix(info.Name(), "_live_test.go") || strings.HasSuffix(info.Name(), "utils_test.go") {
 			return false
 		}
 		return strings.HasSuffix(info.Name(), "_test.go")
