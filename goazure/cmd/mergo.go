@@ -25,10 +25,11 @@ var mergoCmd = &cobra.Command{
 		if len(args) >= 2 {
 			outfile = args[1]
 		}
-		if err := mergego.Merge(dir, outfile); err != nil {
-			return err
-		}
-		return nil
+
+		mergeTest, _ := cmd.Flags().GetBool("test")
+		return mergego.Merge(dir, outfile, mergeTest)
+
+		// return nil
 	},
 }
 
@@ -43,5 +44,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// mergoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	mergoCmd.Flags().BoolP("test", "t", false, "mergo _test.go(default: false)")
 }

@@ -25,16 +25,14 @@
             "args": [
                 "tsp",
                 "swag",
-                
                 // "D:/tmp/sphere",
                 // "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/azuresphere.json",
                 // "./sphere"
-
                 "--originDir",
                 "D:/tmp/sphere",
                 "--compiledFile",
                 "D:/Go/src/github.com/Azure/dev/azure-rest-api-specs/specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/azuresphere.json",
-                "./sphere"  // outputDir
+                "./sphere" // outputDir
             ]
         },
         {
@@ -46,10 +44,11 @@
             "args": [
                 "generate",
                 "release",
-                "--spec", "myspec"
+                "--spec",
+                "myspec"
             ]
         },
-// ---------------------------test---------------------------
+        // ---------------------------test---------------------------
         {
             "name": "autorest test",
             "type": "go",
@@ -61,7 +60,7 @@
                 "TestReadAutorsetMD"
             ]
         },
-// ------------------------test typespec-go generate sdk -----------------
+        // ------------------------test typespec-go generate sdk -----------------
         {
             "name": "TestGenerateSDK",
             "type": "go",
@@ -96,6 +95,19 @@
                 "-test.v",
                 "-test.run",
                 "TestOneTSP"
+            ]
+        },
+        {
+            "name": "goazure mergo _test",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/goazure",
+            "args": [
+                "mergo",
+                "D:\\Go\\src\\github.com\\Azure\\azure-sdk-for-go\\sdk\\resourcemanager\\mongocluster\\armmongocluster",
+                "D:\\tmp\\mongo\\swagger.go",
+                "--test"
             ]
         },
     ]
