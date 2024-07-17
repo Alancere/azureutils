@@ -21,7 +21,13 @@ var lockCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repoRoot := args[0]
-		return generateLockFile(repoRoot)
+
+		up, err := cmd.Flags().GetBool("upgrade")
+		if err != nil {
+			return err
+		}
+
+		return generateLockFile(repoRoot, up)
 	},
 }
 
@@ -37,6 +43,7 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// lockCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	lockCmd.Flags().BoolP("upgrade", "u", false, "Upgrade npm packages to latest version")
 }
 
 const (
@@ -47,7 +54,7 @@ const (
 	emitter_package_lock = "emitter-package-lock.json"
 )
 
-func generateLockFile(repoRoot string) error {
+func generateLockFile(repoRoot string, upgrade bool) error {
 	fmt.Println("Generating lock file...")
 	args := []string{"install"}
 	froceInstall := os.Getenv("TSPCLIENT_FORCE_INSTALL")
@@ -71,13 +78,15 @@ func generateLockFile(repoRoot string) error {
 	defer os.RemoveAll(tempRoot)
 
 	// copy emitter-package to package.json
-	data, err := os.ReadFile(filepath.Join(repoRoot, "eng", emitter_package))
-	if err != nil {
+	if err = copyFile(filepath.Join(repoRoot, "eng", emitter_package), filepath.Join(tempRoot, npm_package)); err != nil {
 		return err
 	}
 
-	if err = os.WriteFile(filepath.Join(tempRoot, npm_package), data, os.ModePerm); err != nil {
-		return err
+	if upgrade {
+		// npm-check-updates -u
+		if err = common.Npx(tempRoot, "npm-check-updates", "-u"); err != nil {
+			return err
+		}
 	}
 
 	// npm install
@@ -93,12 +102,15 @@ func generateLockFile(repoRoot string) error {
 	}
 	if !lockFile.IsDir() {
 		// copy package-lock.json to emitter-package-lock.json
-		data, err := os.ReadFile(lockPath)
-		if err != nil {
+		if err = copyFile(lockPath, filepath.Join(repoRoot, "eng", emitter_package_lock)); err != nil {
 			return err
 		}
-		if err = os.WriteFile(filepath.Join(repoRoot, "eng", emitter_package_lock), data, os.ModePerm); err != nil {
-			return err
+
+		// copy package.json to emitter-package.json
+		if upgrade {
+			if err = copyFile(filepath.Join(tempRoot, npm_package), filepath.Join(repoRoot, "eng", emitter_package)); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -111,4 +123,15 @@ func createTempDirectory(outputDir string) string {
 	os.MkdirAll(tempRoot, os.ModePerm)
 	fmt.Println("Creating temporary working directory", tempRoot)
 	return tempRoot
+}
+
+func copyFile(src, dst string) error {
+	data, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	if err = os.WriteFile(dst, data, os.ModePerm); err != nil {
+		return err
+	}
+	return nil
 }

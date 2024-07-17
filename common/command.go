@@ -115,3 +115,16 @@ func Npm(dir string, args ...string) error {
 
 	return nil
 }
+
+func Npx(dir string, args ...string) error {
+	cmd := exec.Command("npx", args...)
+	cmd.Dir = dir
+
+	output, err := cmd.CombinedOutput()
+	fmt.Printf("###Command: %s\nnpx %s\n%s", cmd.Dir, strings.Join(args, " "), string(output))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
