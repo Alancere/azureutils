@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package tsp
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 // tspCmd represents the tsp command
-var tspCmd = &cobra.Command{
+var TspCmd = &cobra.Command{
 	Use:   "tsp",
 	Short: "about typespec (tsp) command",
 	Long:  ``,
@@ -21,7 +21,7 @@ var tspCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(tspCmd)
+	// rootCmd.AddCommand(TspCmd)
 
 	// Here you will define your flags and configuration settings.
 

@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package tsp
 
 import (
 	"fmt"
@@ -16,7 +16,7 @@ import (
 var swagCmd = &cobra.Command{
 	Use:   "swag",
 	Short: "compare swagger file",
-	Long: `go azure tsp swag originDir compiledFile
+	Long: `goazure tsp swag originDir compiledFile
 	or goazure tsp swag --originDir originDir --compiledFile compiledFile`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		l := len(args)
@@ -68,7 +68,7 @@ var (
 )
 
 func init() {
-	tspCmd.AddCommand(swagCmd)
+	TspCmd.AddCommand(swagCmd)
 
 	// Here you will define your flags and configuration settings.
 

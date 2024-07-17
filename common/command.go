@@ -102,3 +102,16 @@ func TestProxy(dir string, args ...string) (string, error) {
 
 	return output, err
 }
+
+func Npm(dir string, args ...string) error {
+	cmd := exec.Command("npm", args...)
+	cmd.Dir = dir
+
+	output, err := cmd.CombinedOutput()
+	fmt.Printf("###Command: %s\nnpm %s\n%s", cmd.Dir, strings.Join(args, " "), string(output))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

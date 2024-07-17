@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/Alancere/azureutils/goazure/cmd/generate"
+	"github.com/Alancere/azureutils/goazure/cmd/tsp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -47,6 +48,7 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	rootCmd.AddCommand(generate.GenerateCmd)
+	rootCmd.AddCommand(tsp.TspCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.

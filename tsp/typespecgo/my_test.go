@@ -167,12 +167,12 @@ func TestGenerateSDK(t *testing.T) {
 				log.Println("##tsp##go vet", err)
 			} else {
 				// merge go files
-				if err = mergego.Merge(tspsdk, filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk)+".go")); err != nil {
+				if err = mergego.Merge(tspsdk, filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk)+".go"), false); err != nil {
 					log.Fatal(err)
 				}
 
 				// merge fake go files
-				if err = mergego.Merge(filepath.Join(tspsdk, "fake"), filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk)+"_fake.go")); err != nil {
+				if err = mergego.Merge(filepath.Join(tspsdk, "fake"), filepath.Join("D:/tmp/typespecp-diff", filepath.Base(tspsdk)+"_fake.go"), false); err != nil {
 					log.Fatal(err)
 				}
 			}
@@ -206,12 +206,12 @@ func TestGenerateSDK(t *testing.T) {
 						log.Println("##autorest##go vet", err)
 					} else {
 						// merge go files
-						if err = mergego.Merge(autorestsdk, filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk)+".go")); err != nil {
+						if err = mergego.Merge(autorestsdk, filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk)+".go"), false); err != nil {
 							log.Fatal(err)
 						}
 
 						// merge fake go files
-						if err = mergego.Merge(filepath.Join(autorestsdk, "fake"), filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk)+"_fake.go")); err != nil {
+						if err = mergego.Merge(filepath.Join(autorestsdk, "fake"), filepath.Join("D:/tmp/autorest-diff", filepath.Base(tspsdk)+"_fake.go"), false); err != nil {
 							log.Fatal(err)
 						}
 					}
@@ -365,12 +365,12 @@ func TestGeneratePrivateSDK(t *testing.T) {
 				log.Println("####go vet", err)
 			} else {
 				// merge go files
-				if err = mergego.Merge(gosdk, filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk)+".go")); err != nil {
+				if err = mergego.Merge(gosdk, filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk)+".go"), false); err != nil {
 					log.Fatal(err)
 				}
 
 				// merge fake go files
-				if err = mergego.Merge(filepath.Join(gosdk, "fake"), filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk)+"_fake.go")); err != nil {
+				if err = mergego.Merge(filepath.Join(gosdk, "fake"), filepath.Join("D:/tmp/typespecp-diff-pr", filepath.Base(gosdk)+"_fake.go"), false); err != nil {
 					log.Fatal(err)
 				}
 			}
