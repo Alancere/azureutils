@@ -126,7 +126,7 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 
 		serviceName, armServiceName := armName(moduleName.(string))
 		typespecgoOption := map[string]any{
-			"module": module,
+			// "module": module,
 			// "module-version":            moduleVersion,
 			// "emitter-output-dir":        fmt.Sprintf("{project-root}/go/%s", moduleName),
 			"generate-fakes":            true,
@@ -136,6 +136,8 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 
 			"service-dir": "sdk",
 			"package-dir": fmt.Sprintf("resourcemanager/%s/%s", serviceName, armServiceName),
+			"module": "{service-dir}/{package-dir}",
+			"examples-directory": "./examples",
 		}
 
 		// typespce-go stutter
