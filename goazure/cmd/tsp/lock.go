@@ -21,7 +21,7 @@ var lockCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		repoRoot := args[0]
-		return generateLockFile(repoRoot, repoRoot)
+		return generateLockFile(repoRoot)
 	},
 }
 
@@ -47,7 +47,7 @@ const (
 	emitter_package_lock = "emitter-package-lock.json"
 )
 
-func generateLockFile(rootUrl, repoRoot string) error {
+func generateLockFile(repoRoot string) error {
 	fmt.Println("Generating lock file...")
 	args := []string{"install"}
 	froceInstall := os.Getenv("TSPCLIENT_FORCE_INSTALL")
@@ -61,8 +61,14 @@ func generateLockFile(rootUrl, repoRoot string) error {
 		}
 	}
 
+	repoRoot, err := filepath.Abs(repoRoot)
+	if err != nil {
+		return err
+	}
+
 	// create temp directory
-	tempRoot := createTempDirectory(rootUrl)
+	tempRoot := createTempDirectory(repoRoot)
+	defer os.RemoveAll(tempRoot)
 
 	// copy emitter-package to package.json
 	data, err := os.ReadFile(filepath.Join(repoRoot, "eng", emitter_package))
@@ -94,11 +100,6 @@ func generateLockFile(rootUrl, repoRoot string) error {
 		if err = os.WriteFile(filepath.Join(repoRoot, "eng", emitter_package_lock), data, os.ModePerm); err != nil {
 			return err
 		}
-	}
-
-	// remove temp directory
-	if err = os.RemoveAll(tempRoot); err != nil {
-		return err
 	}
 
 	fmt.Println("Lock file generated in", filepath.Join(repoRoot, "eng", emitter_package_lock))
