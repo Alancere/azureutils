@@ -75,7 +75,7 @@ func MergeGo(dir string, outfile string) error {
 		return true
 	}
 
-	return MergeX(dir, outfile, filter)
+	return MergeX(dir, outfile, ast.FilterImportDuplicates|ast.FilterUnassociatedComments, filter)
 }
 
 func MergeTest(dir string, outfile string) error {
@@ -86,10 +86,10 @@ func MergeTest(dir string, outfile string) error {
 		}
 		return strings.HasSuffix(info.Name(), "_test.go")
 	}
-	return MergeX(dir, outfile, filter)
+	return MergeX(dir, outfile, ast.FilterImportDuplicates, filter)
 }
 
-func MergeX(dir string, outfile string, filter func(fs.FileInfo) bool) error {
+func MergeX(dir string, outfile string, mode ast.MergeMode, filter func(fs.FileInfo) bool) error {
 	fset := token.NewFileSet()
 	pkgs, err := parser.ParseDir(fset, dir, filter, parser.ParseComments)
 	if err != nil {
@@ -98,7 +98,7 @@ func MergeX(dir string, outfile string, filter func(fs.FileInfo) bool) error {
 
 	merged := &ast.File{}
 	for k := range pkgs {
-		merged = ast.MergePackageFiles(pkgs[k], ast.FilterImportDuplicates) // |ast.FilterUnassociatedComments)
+		merged = ast.MergePackageFiles(pkgs[k], mode)
 	}
 
 	// Separate import declarations and other declarations

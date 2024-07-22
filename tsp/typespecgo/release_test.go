@@ -32,6 +32,8 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 	mgmtTspCount := make([]string, 0)
 	dataPlaneTspCount := make([]string, 0)
 
+	successedTSP := make([]string, 0)
+
 	for _, configPath := range configPaths {
 		// filter
 		if strings.Contains(configPath, "machinelearning\\Azure.AI.ChatProtocol") { // 没有go track2 config
@@ -108,9 +110,9 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 			"inject-spans":              true,
 			"remove-unreferenced-types": true,
 
-			"service-dir": "sdk",
-			"package-dir": fmt.Sprintf("resourcemanager/%s/%s", serviceName, armServiceName),
-			"module": "{service-dir}/{package-dir}",
+			"service-dir":        "sdk",
+			"package-dir":        fmt.Sprintf("resourcemanager/%s/%s", serviceName, armServiceName),
+			"module":             "github.com/Azure/azure-sdk-for-go/{service-dir}/{package-dir}",
 			"examples-directory": "./examples",
 		}
 
@@ -152,10 +154,14 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 		}
 		_ = output
 
+		successedTSP = append(successedTSP, configPath)
 		// break
 	}
 
-	// fmt.Println(tspErrs)
+	fmt.Println("successed tsp count:", len(successedTSP))
+	for _, s := range successedTSP {
+		fmt.Println(s)
+	}
 
 	// write error msg to error.log
 	fmt.Println("tsp compiler error count:", len(tspErrs))
