@@ -14,6 +14,11 @@ import (
 	"github.com/goccy/go-yaml"
 )
 
+/*
+branch:(sdkrepo specRepo)
+	tsp_mgmt_0723 tsp_spec_0723
+*/
+
 // test generator release-v2 tsp
 func TestGenerateTool_Support_TSP(t *testing.T) {
 	// 存放通过typespec-go生成的结果
@@ -25,6 +30,7 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 	debugSdkDir := "D:/Go/src/github.com/Azure/debug/azure-sdk-for-go"
 	debugSpecDir := "D:/Go/src/github.com/Azure/debug/azure-rest-api-specs"
 	autorestGenerate := false // 是否通过autorest.go生成
+	autorestGenerate = true
 
 	genertorErrs := make([]error, 0)
 	goVetErrs := make([]error, 0)
@@ -160,12 +166,12 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 			continue
 		} else {
 			// merge go files
-			if err = mergego.Merge(tspsdk, filepath.Join("D:/tmp/typespecp-tool-diff", filepath.Base(tspsdk)+".go"), false); err != nil {
+			if err = mergego.Merge(tspsdk, filepath.Join("D:/tmp/typespec-X-diff", filepath.Base(tspsdk)+".go"), false); err != nil {
 				log.Fatal(err)
 			}
 
 			// merge fake go files
-			if err = mergego.Merge(filepath.Join(tspsdk, "fake"), filepath.Join("D:/tmp/typespecp-tool-diff", filepath.Base(tspsdk)+"_fake.go"), false); err != nil {
+			if err = mergego.Merge(filepath.Join(tspsdk, "fake"), filepath.Join("D:/tmp/typespec-X-diff", filepath.Base(tspsdk)+"_fake.go"), false); err != nil {
 				log.Fatal(err)
 			}
 		}
@@ -203,7 +209,7 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 					log.Println("##autorest##go vet", err)
 				} else {
 					// merge go files
-					if err = mergego.Merge(autorestsdk, filepath.Join("D:/tmp/autorest-diff", filepath.Base(autorestsdk)+".go"), false); err != nil {
+					if err = mergego.Merge(autorestsdk, filepath.Join("D:/tmp/autorest-X-diff", filepath.Base(autorestsdk)+".go"), false); err != nil {
 						log.Fatal(err)
 					}
 
