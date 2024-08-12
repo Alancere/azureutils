@@ -13,7 +13,6 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
-	github.com/fatih/color v1.17.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/go-openapi/analysis v0.22.0 // indirect
@@ -69,6 +68,9 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-require github.com/Alancere/azureutils v0.1.0
+require (
+	github.com/Alancere/azureutils v0.1.0
+	github.com/fatih/color v1.17.0
+)
 
 replace github.com/Alancere/azureutils v0.1.0 => ../../azureutils

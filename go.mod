@@ -9,9 +9,11 @@ require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/go-openapi/loads v0.21.5
 	github.com/go-openapi/spec v0.20.14
+	github.com/go-playground/validator/v10 v10.22.0
 	github.com/goccy/go-yaml v1.11.3
 	github.com/google/go-cmp v0.6.0
 	github.com/google/go-github/v53 v53.2.0
+	github.com/iancoleman/orderedmap v0.3.0
 	github.com/json-iterator/go v1.1.12
 	github.com/spf13/viper v1.18.2
 	github.com/stretchr/testify v1.9.0
@@ -36,7 +38,6 @@ require (
 	github.com/go-openapi/swag v0.22.6 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.22.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
