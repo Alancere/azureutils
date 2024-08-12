@@ -47,6 +47,11 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 
 	successedTSP := make([]string, 0)
 
+	configPaths = []string{
+		"D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\healthdataaiservices\\HealthDataAIServices.Management\\tspconfig.yaml",
+		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\mongocluster\\DocumentDB.MongoCluster.Management\\tspconfig.yaml",
+	}
+
 	for _, configPath := range configPaths {
 		// filter
 		if strings.Contains(configPath, "machinelearning\\Azure.AI.ChatProtocol") { // 没有go track2 config
@@ -115,18 +120,17 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 
 		serviceName, armServiceName := armName(moduleName.(string))
 		typespecgoOption := map[string]any{
-			// "module": module,
-			// "module-version":            moduleVersion,
-			// "emitter-output-dir":        fmt.Sprintf("{project-root}/go/%s", moduleName),
+			"service-dir":               fmt.Sprintf("sdk/resourcemanager/%s", serviceName),
+			"package-dir":               armServiceName,
+			"module":                    "github.com/Azure/azure-sdk-for-go/{service-dir}/{package-dir}",
+			"examples-directory":        "{project-root}/examples",
+			"fix-const-stuttering":      true,
+			"flavor":                    "azure",
+			"generate-examples":         true,
 			"generate-fakes":            true,
-			"head-as-boolean":           true, // head method
+			"head-as-boolean":           true,
 			"inject-spans":              true,
 			"remove-unreferenced-types": true,
-
-			"service-dir":        "sdk",
-			"package-dir":        fmt.Sprintf("resourcemanager/%s/%s", serviceName, armServiceName),
-			"module":             "github.com/Azure/azure-sdk-for-go/{service-dir}/{package-dir}",
-			"examples-directory": "./examples",
 		}
 
 		// typespce-go stutter
@@ -149,7 +153,7 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 			"--tsp-config",
 			tspConfig.Path,
 			"--skip-create-branch=true",
-			"--tsp-client-option", "--debug",
+			"--tsp-client-option", "--debug,--save-inputs",
 		)
 		// go mod tidy and go vet ./...
 		if err != nil {
@@ -214,7 +218,7 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 					}
 
 					// merge fake go files
-					if err = mergego.Merge(filepath.Join(autorestsdk, "fake"), filepath.Join("D:/tmp/autorest-diff", filepath.Base(autorestsdk)+"_fake.go"), false); err != nil {
+					if err = mergego.Merge(filepath.Join(autorestsdk, "fake"), filepath.Join("D:/tmp/autorest-X-diff", filepath.Base(autorestsdk)+"_fake.go"), false); err != nil {
 						log.Fatal(err)
 					}
 				}
