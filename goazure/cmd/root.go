@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Alancere/azureutils/goazure/cmd/cadlranch"
 	"github.com/Alancere/azureutils/goazure/cmd/generate"
 	"github.com/Alancere/azureutils/goazure/cmd/spec"
 	"github.com/Alancere/azureutils/goazure/cmd/tsp"
@@ -51,6 +52,7 @@ func init() {
 	rootCmd.AddCommand(generate.GenerateCmd)
 	rootCmd.AddCommand(tsp.TspCmd)
 	rootCmd.AddCommand(spec.SpecCmd)
+	rootCmd.AddCommand(cadlranch.CadlRanchCmd)
 }
 
 // initConfig reads in config file and ENV variables if set.
