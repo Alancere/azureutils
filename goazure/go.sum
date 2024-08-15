@@ -1,3 +1,5 @@
+github.com/Alancere/azureutils v0.0.0-20240815074323-fc03a78e06a9 h1:9Gu8fmddp9jr5IFEWypf4i+Upl90w7PTWeRWaBskH58=
+github.com/Alancere/azureutils v0.0.0-20240815074323-fc03a78e06a9/go.mod h1:JkhM489Ibo8cfzalz8CQke4WBkOPc6OI9nYSqPzqEMU=
 github.com/Jeffail/gabs v1.4.0 h1://5fYRRTq1edjfIrQGvdkcd22pkYUrHZ5YC/H2GJVAo=
 github.com/Jeffail/gabs v1.4.0/go.mod h1:6xMvQMK4k33lb7GUUpaAPh6nKMmemQeg5d4gn7/bOXc=
 github.com/Masterminds/semver/v3 v3.2.1 h1:RN9w6+7QoMeJVGyfmbcgs28Br8cvmnucEXnY0rYXWg0=

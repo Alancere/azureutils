@@ -3,7 +3,7 @@ module github.com/Alancere/azureutils/goazure
 go 1.22.0
 
 require (
-	github.com/Alancere/azureutils v0.1.0
+	github.com/Alancere/azureutils v0.0.0-20240815074323-fc03a78e06a9
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/fatih/color v1.17.0
 	github.com/json-iterator/go v1.1.12
@@ -68,5 +68,3 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/Alancere/azureutils v0.1.0 => ../../azureutils
