@@ -1,6 +1,7 @@
 package typespecgo
 
 import (
+	"fmt"
 	"os"
 	"regexp"
 	"slices"
@@ -133,4 +134,21 @@ func (tc *TSPConfig) Write() error {
 	}
 
 	return os.WriteFile(tc.Path, data, 0o666)
+}
+
+func (tc *TSPConfig) EmitOption(emit string) (any, error) {
+	if tc.Options == nil {
+		return nil, fmt.Errorf("no options found in %s", tc.Path)
+	}
+
+	if v, ok := tc.Options[emit]; ok {
+		return v, nil
+	}
+
+	return nil, fmt.Errorf("emit %s option not found in %s", emit, tc.Path)
+}
+
+func (tc TSPConfig) ExistEmitOption(emit string) bool {
+	_, err := tc.EmitOption(emit)
+	return err == nil
 }

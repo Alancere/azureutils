@@ -35,22 +35,25 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 	genertorErrs := make([]error, 0)
 	goVetErrs := make([]error, 0)
 
-	configPaths, err := typespecgo.SearchTSP(specDir)
-	if err != nil {
-		t.Fatal(err)
+	var err error
+	var configPaths []string
+	configPaths = []string{
+		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\healthdataaiservices\\HealthDataAIServices.Management\\tspconfig.yaml",
+		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\mongocluster\\DocumentDB.MongoCluster.Management\\tspconfig.yaml",
+		"D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\fabric\\Microsoft.Fabric.Management\\tspconfig.yaml",
+	}
+	if len(configPaths) == 0 {
+		configPaths, err = typespecgo.SearchTSP(specDir)
+		if err != nil {
+			t.Fatal(err)
+		}
 	}
 
 	tspErrs := make([]error, 0)
 	allErrMsg := make([]string, 0)
 	mgmtTspCount := make([]string, 0)
 	dataPlaneTspCount := make([]string, 0)
-
 	successedTSP := make([]string, 0)
-
-	configPaths = []string{
-		"D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\healthdataaiservices\\HealthDataAIServices.Management\\tspconfig.yaml",
-		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\mongocluster\\DocumentDB.MongoCluster.Management\\tspconfig.yaml",
-	}
 
 	for _, configPath := range configPaths {
 		// filter
@@ -119,28 +122,30 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 		fmt.Println("exec ###", configPath)
 
 		serviceName, armServiceName := armName(moduleName.(string))
-		typespecgoOption := map[string]any{
-			"service-dir":               fmt.Sprintf("sdk/resourcemanager/%s", serviceName),
-			"package-dir":               armServiceName,
-			"module":                    "github.com/Azure/azure-sdk-for-go/{service-dir}/{package-dir}",
-			"examples-directory":        "{project-root}/examples",
-			"fix-const-stuttering":      true,
-			"flavor":                    "azure",
-			"generate-examples":         true,
-			"generate-fakes":            true,
-			"head-as-boolean":           true,
-			"inject-spans":              true,
-			"remove-unreferenced-types": true,
-		}
+		if !tspConfig.ExistEmitOption(string(typespecgo.TypeSpec_GO)) {
+			typespecgoOption := map[string]any{
+				"service-dir":               fmt.Sprintf("sdk/resourcemanager/%s", serviceName),
+				"package-dir":               armServiceName,
+				"module":                    "github.com/Azure/azure-sdk-for-go/{service-dir}/{package-dir}",
+				"examples-directory":        "{project-root}/examples",
+				"fix-const-stuttering":      true,
+				"flavor":                    "azure",
+				"generate-examples":         true,
+				"generate-fakes":            true,
+				"head-as-boolean":           true,
+				"inject-spans":              true,
+				"remove-unreferenced-types": true,
+			}
 
-		// typespce-go stutter
-		// stutter(configPath, typespecgoOption)
+			// typespce-go stutter
+			// stutter(configPath, typespecgoOption)
 
-		// tspConfig.OnlyEmit(typespecgoEmit)
-		tspConfig.EditOptions(string(typespecgo.TypeSpec_GO), typespecgoOption, false)
-		err = tspConfig.Write()
-		if err != nil {
-			t.Fatal(err)
+			// tspConfig.OnlyEmit(typespecgoEmit)
+			tspConfig.EditOptions(string(typespecgo.TypeSpec_GO), typespecgoOption, false)
+			err = tspConfig.Write()
+			if err != nil {
+				t.Fatal(err)
+			}
 		}
 
 		// exec genertor release-v2 --tsp
