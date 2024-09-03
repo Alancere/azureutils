@@ -40,7 +40,8 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 	configPaths = []string{
 		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\healthdataaiservices\\HealthDataAIServices.Management\\tspconfig.yaml",
 		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\mongocluster\\DocumentDB.MongoCluster.Management\\tspconfig.yaml",
-		"D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\fabric\\Microsoft.Fabric.Management\\tspconfig.yaml",
+		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\fabric\\Microsoft.Fabric.Management\\tspconfig.yaml",
+		// "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\workloads\\Workloads.SAPVirtualInstance.Management\\tspconfig.yaml",
 	}
 	if len(configPaths) == 0 {
 		configPaths, err = typespecgo.SearchTSP(specDir)
@@ -70,7 +71,9 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 		}
 
 		// read readme.go.md
-		readmeGOMD := readmegomd(filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.go.md"))
+		defultReadmeGoMd := filepath.Join(filepath.Dir(configPath), "../resource-manager/readme.go.md")
+		// defultReadmeGoMd = "D:\\Go\\src\\github.com\\Azure\\azure-rest-api-specs\\specification\\workloads\\resource-manager\\Microsoft.Workloads\\SAPVirtualInstance\\readme.go.md"
+		readmeGOMD := readmegomd(defultReadmeGoMd)
 
 		// deep readme.md
 		deepReamd(configPath, readmeGOMD)
@@ -207,6 +210,7 @@ func TestGenerateTool_Support_TSP(t *testing.T) {
 			if err != nil {
 				log.Println(err)
 			}
+			// defaultTag = "tag: package-2024-09"
 			if defaultTag != "" {
 				autorestOps = append(autorestOps, fmt.Sprintf("--package-config=%s", strings.TrimSpace(defaultTag)))
 			}
